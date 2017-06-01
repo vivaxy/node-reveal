@@ -1,0 +1,30 @@
+{
+  "name": "@vivaxy/reveal",
+  "version": "0.0.1",
+  "description": "nodejs reveal.js cli",
+  "bin": {
+    "reveal": "./bin/index.js"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivaxy/node-reveal.git"
+  },
+  "keywords": [
+    "reveal.js"
+  ],
+  "author": "vivaxy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vivaxy/node-reveal/issues"
+  },
+  "homepage": "https://github.com/vivaxy/node-reveal#readme",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "fs-extra": "^3.0.1",
+    "koa": "^2.2.0",
+    "koa-send": "^4.1.0",
+    "update-notifier": "^2.1.0",
+    "yargs": "^8.0.1"
+  }
+}
