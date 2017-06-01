@@ -28,7 +28,7 @@ Use `^Note:` as speaker notes separator.
 
 node.js@v8
 
-## Usage
+## Basic Usage
 
 ### Install
 
@@ -53,9 +53,11 @@ Update `package.json`
 
 `> npm start`
 
+## Advanced Usage
+
 ### Commands
 
-#### Start
+#### `start`
 
 ##### Basic Usage
 
