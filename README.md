@@ -11,6 +11,31 @@
 
 node.js@v8
 
+## Usage
+
+### Install
+
+`yarn add @vivaxy/reveal`
+
+`npm install @vivaxy/reveal`
+
+### Configuration
+
+Update `package.json`
+
+```js
+{
+  // ...
+  "scripts": {
+    "start": "reveal server --markdown ./ppt/reveal.md"
+  }
+}
+```
+
+### Start server
+
+`> npm start`
+
 ## Prior Art
 
 - [ksky521/nodePPT](https://github.com/ksky521/nodePPT)
