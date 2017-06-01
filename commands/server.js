@@ -3,13 +3,9 @@
  * @author vivaxy
  */
 
-/**
- * todo
- *  - open browser
- */
-
 const path = require('path');
 
+const ip = require('ip');
 const ejs = require('ejs');
 const Koa = require('koa');
 const log = require('log-util');
@@ -18,6 +14,7 @@ const send = require('koa-send');
 const glob = require('glob-promise');
 const chokidar = require('chokidar');
 const createSocketIo = require('socket.io');
+const openBrowser = require('react-dev-utils/openBrowser');
 
 const projectRoot = process.cwd();
 const nodeRevealRoot = path.join(__dirname, '..');
@@ -133,6 +130,7 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch 
     if (watch) {
         startWatch({ markdown });
     }
+    openBrowser(`http://${ip.address()}:${port}/?role=#/`);
 };
 
 const getValidThemes = async(matching, ext) => {
@@ -146,7 +144,7 @@ const argsFormats = {
     markdown: async(input) => {
         const markdownExists = await fse.pathExists(input);
         if (!markdownExists) {
-            log.error('[reveal]', '`markdown` is required');
+            log.error('[reveal]', 'Invalid markdown file');
             process.exit(1);
         }
         return input;
