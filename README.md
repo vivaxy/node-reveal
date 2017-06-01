@@ -16,6 +16,12 @@
 - Theme config.
 - Support inline html.
 
+## Markdown Syntax
+
+See [reveal.js](https://github.com/hakimel/reveal.js#markdown) for reference.
+
+Use `---` as slides separator.
+
 ## Support
 
 node.js@v8
