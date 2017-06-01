@@ -20,9 +20,9 @@
 
 See [reveal.js](https://github.com/hakimel/reveal.js#markdown) for reference.
 
-Use `\r\n----\r\n` as horizontal slides separator.
-Use `\r\n---\r\n` as vertical slides separator.
-Use `Note:` as speaker notes separator.
+Use `\r?\n----\r?\n` as horizontal slides separator.
+Use `\r?\n---\r?\n` as vertical slides separator.
+Use `^Note:` as speaker notes separator.
 
 ## Support
 
