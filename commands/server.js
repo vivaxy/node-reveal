@@ -5,7 +5,6 @@
 
 /**
  * todo
- * 1. socket to render title
  * 2. socket to live reload
  * 3. socket to role=master
  * 4. open browser
@@ -60,6 +59,7 @@ const responses = {
 const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
     const server = new Koa();
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
+    const markdownFilename = path.basename(markdown, '.md');
 
     server.use(async(ctx) => {
         const { path } = ctx.request;
@@ -86,7 +86,7 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port }) => 
             log.debug('[reveal]', 'user disconnected', socketSet.size);
         });
         socketSet.add(socket);
-        socket.emit('connected');
+        socket.emit('connected', { title: markdownFilename });
         log.debug('[reveal]', 'user connected', socketSet.size);
     });
 };

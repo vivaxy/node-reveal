@@ -63,6 +63,7 @@
     var socket = io.connect(location.host);
     socket.on('connected', function(data) {
         console.log('[reveal]', 'connected');
+        document.title = data.title;
     });
     socket.on('disconnected', function() {
         console.log('[reveal]', 'disconnected');
