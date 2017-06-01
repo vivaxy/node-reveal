@@ -3,19 +3,33 @@
  * @author vivaxy
  */
 
+/**
+ * todo
+ * 1. socket to render title
+ * 2. socket to live reload
+ * 3. socket to role=master
+ */
+
+const path = require('path');
+
 const ejs = require('ejs');
 const Koa = require('koa');
 const log = require('log-util');
 const fse = require('fs-extra');
 const send = require('koa-send');
 
+const projectRoot = process.cwd();
+const revealRoot = path.join(__dirname, '..');
+const templatePath = path.join(revealRoot, './template/index.ejs');
+
+const readFile = async(filePath) => {
+    return await fse.readFile(filePath, 'utf8');
+};
+
 const renderIndexHtml = async() => {
-    const template = await fse.readFile('./template/index.ejs', 'utf8');
+    const template = await readFile(templatePath);
     const render = ejs.compile(template);
-    return render({
-        title: 'test',
-        markdown: 'test/test.md',
-    });
+    return render();
 };
 
 const responses = {
@@ -26,13 +40,16 @@ const responses = {
     },
     '/node-reveal/reveal.md': async({ markdown }) => {
         return {
-            body: await fse.readFile(markdown, 'uft9'),
+            body: await readFile(markdown),
         };
     },
 };
 
 const createServer = ({ markdown, port }) => {
     const server = new Koa();
+
+    const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
+
     server.use(async(ctx) => {
         const { path } = ctx.request;
         if (responses[path]) {
@@ -40,8 +57,11 @@ const createServer = ({ markdown, port }) => {
             const { body } = await getResponse({ markdown });
             ctx.response.status = 200;
             ctx.response.body = body;
+        } else if (path.startsWith('/reveal.js') || path.startsWith('/highlight.js')) {
+            await send(ctx, path, { root: revealRoot });
         } else {
-            await send(ctx, path);
+            // to resolve images and links relative to markdown
+            await send(ctx, path, { root: markdownRelativePath });
         }
     });
     server.listen(port);
