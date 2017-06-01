@@ -1,6 +1,6 @@
 {
   "name": "@vivaxy/reveal",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "nodejs reveal.js cli",
   "bin": {
     "reveal": "./bin/index.js"
