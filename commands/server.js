@@ -8,6 +8,8 @@
  * 1. socket to render title
  * 2. socket to live reload
  * 3. socket to role=master
+ * 4. open browser
+ * 5. use resolve instead of git submodule
  */
 
 const path = require('path');
@@ -18,10 +20,13 @@ const log = require('log-util');
 const fse = require('fs-extra');
 const send = require('koa-send');
 const glob = require('glob-promise');
+const createSocketIo = require('socket.io');
 
 const projectRoot = process.cwd();
 const revealRoot = path.join(__dirname, '..');
 const templatePath = path.join(revealRoot, './template/index.ejs');
+
+const socketSet = new Set();
 
 const readFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
@@ -44,11 +49,16 @@ const responses = {
             body: await readFile(markdown),
         };
     },
+    '/socket.io-client/dist/socket.io.js': async() => {
+        const filePath = require.resolve('socket.io-client');
+        return {
+            body: await readFile(path.join(filePath, '../../dist/socket.io.js')),
+        };
+    },
 };
 
 const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
     const server = new Koa();
-
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
 
     server.use(async(ctx) => {
@@ -65,8 +75,20 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port }) => 
             await send(ctx, path, { root: markdownRelativePath });
         }
     });
-    server.listen(port);
+    const nativeServer = server.listen(port);
     log.debug('[reveal]', 'server started on', port);
+
+    const io = createSocketIo(nativeServer);
+    io.on('connection', (socket) => {
+        socket.on('disconnect', () => {
+            socketSet.delete(socket);
+            io.emit('disconnected');
+            log.debug('[reveal]', 'user disconnected', socketSet.size);
+        });
+        socketSet.add(socket);
+        socket.emit('connected');
+        log.debug('[reveal]', 'user connected', socketSet.size);
+    });
 };
 
 const getValidThemes = async(base) => {
@@ -107,7 +129,8 @@ exports.handler = async({
                             theme = 'solarized',
                             highlightTheme = 'solarized-light',
                             transition = 'slide',
-                            port = 8080
+                            port = 8080,
+                            watch = false,
                         }) => {
     await checkParameters({ markdown, theme, highlightTheme, transition, port });
     createServer({ markdown, theme, highlightTheme, transition, port });
