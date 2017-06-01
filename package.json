@@ -5,7 +5,9 @@
   "bin": {
     "reveal": "./bin/index.js"
   },
-  "scripts": {},
+  "scripts": {
+    "release": "standard-version && git push --follow-tags && npm publish --access=public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vivaxy/node-reveal.git"
@@ -27,5 +29,8 @@
     "log-util": "^1.2.0",
     "update-notifier": "^2.1.0",
     "yargs": "^8.0.1"
+  },
+  "devDependencies": {
+    "standard-version": "^4.0.0"
   }
 }
