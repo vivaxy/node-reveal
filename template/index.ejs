@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>reveal</title>
     <link rel="stylesheet" href="/reveal.js/css/reveal.css">
-    <link rel="stylesheet" href="/reveal.js/css/theme/solarized.css">
-    <link rel="stylesheet" href="/highlight.js/src/styles/solarized-light.css">
+    <link rel="stylesheet" href="/reveal.js/css/theme/<%= theme %>.css">
+    <link rel="stylesheet" href="/highlight.js/src/styles/<%= highlightTheme %>.css">
     <script>
         var link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -31,7 +31,7 @@
         history: true,
         center: true,
 
-        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        transition: '<%= transition %>',
 
         dependencies: [
             {

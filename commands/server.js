@@ -17,6 +17,7 @@ const Koa = require('koa');
 const log = require('log-util');
 const fse = require('fs-extra');
 const send = require('koa-send');
+const glob = require('glob-promise');
 
 const projectRoot = process.cwd();
 const revealRoot = path.join(__dirname, '..');
@@ -26,16 +27,16 @@ const readFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
 };
 
-const renderIndexHtml = async() => {
+const renderIndexHtml = async({ theme, highlightTheme, transition }) => {
     const template = await readFile(templatePath);
     const render = ejs.compile(template);
-    return render();
+    return render({ theme, highlightTheme, transition });
 };
 
 const responses = {
-    '/': async() => {
+    '/': async({ theme, highlightTheme, transition }) => {
         return {
-            body: await renderIndexHtml(),
+            body: await renderIndexHtml({ theme, highlightTheme, transition }),
         };
     },
     '/node-reveal/reveal.md': async({ markdown }) => {
@@ -45,7 +46,7 @@ const responses = {
     },
 };
 
-const createServer = ({ markdown, port }) => {
+const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
     const server = new Koa();
 
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
@@ -54,7 +55,7 @@ const createServer = ({ markdown, port }) => {
         const { path } = ctx.request;
         if (responses[path]) {
             const getResponse = responses[path];
-            const { body } = await getResponse({ markdown });
+            const { body } = await getResponse({ markdown, theme, highlightTheme, transition });
             ctx.response.status = 200;
             ctx.response.body = body;
         } else if (path.startsWith('/reveal.js') || path.startsWith('/highlight.js')) {
@@ -68,10 +69,32 @@ const createServer = ({ markdown, port }) => {
     log.debug('[reveal]', 'server started on', port);
 };
 
-const checkParameters = async({ markdown, port }) => {
+const getValidThemes = async(base) => {
+    const files = await glob(base + '/*.css');
+    return files.map((file) => {
+        return path.basename(file, '.css');
+    });
+};
+
+const checkParameters = async({ markdown, theme, highlightTheme, transition, port }) => {
     const markdownExists = await fse.pathExists(markdown);
     if (!markdownExists) {
         log.error('[reveal]', 'markdown is required');
+        process.exit(1);
+    }
+    const validThemes = await getValidThemes(path.join(revealRoot, 'reveal.js', 'css', 'theme'));
+    if (!validThemes.includes(theme)) {
+        log.error('[reveal]', 'valid themes:', validThemes.join('/'));
+        process.exit(1);
+    }
+    const validHighlightTheme = await getValidThemes(path.join(revealRoot, 'highlight.js', 'src', 'styles', ''));
+    if (!validHighlightTheme.includes(highlightTheme)) {
+        log.error('[reveal]', 'valid highlight themes:', validHighlightTheme.join('/'));
+        process.exit(1);
+    }
+    const validTransitions = ['none', 'fade', 'slide', 'convex', 'concave', 'zoom'];
+    if (!validTransitions.includes(transition)) {
+        log.error('[reveal]', 'valid transitions:', validTransitions.join('/'));
         process.exit(1);
     }
 };
@@ -79,7 +102,13 @@ const checkParameters = async({ markdown, port }) => {
 exports.command = 'server';
 exports.describe = 'Start a nodejs server to display presentation';
 exports.builder = {};
-exports.handler = async({ markdown, port = 8080 }) => {
-    await checkParameters({ markdown, port });
-    createServer({ markdown, port });
+exports.handler = async({
+                            markdown,
+                            theme = 'solarized',
+                            highlightTheme = 'solarized-light',
+                            transition = 'slide',
+                            port = 8080
+                        }) => {
+    await checkParameters({ markdown, theme, highlightTheme, transition, port });
+    createServer({ markdown, theme, highlightTheme, transition, port });
 };
