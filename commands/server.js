@@ -5,9 +5,8 @@
 
 /**
  * todo
- * 3. socket to role=master
- * 4. open browser
- * 5. use resolve instead of git submodule
+ *  - open browser
+ *  - use resolve instead of git submodule
  */
 
 const path = require('path');
@@ -26,6 +25,7 @@ const revealRoot = path.join(__dirname, '..');
 const templatePath = path.join(revealRoot, './template/index.ejs');
 
 const socketSet = new Set();
+let masterSocket = null;
 
 const readFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
@@ -37,12 +37,15 @@ const renderIndexHtml = async({ theme, highlightTheme, transition }) => {
     return render({ theme, highlightTheme, transition });
 };
 
+const responseIndex = async({ theme, highlightTheme, transition }) => {
+    return {
+        body: await renderIndexHtml({ theme, highlightTheme, transition }),
+    };
+};
+
 const responses = {
-    '/': async({ theme, highlightTheme, transition }) => {
-        return {
-            body: await renderIndexHtml({ theme, highlightTheme, transition }),
-        };
-    },
+    '/': responseIndex,
+    '/index.html': responseIndex,
     '/node-reveal/reveal.md': async({ markdown }) => {
         return {
             body: await readFile(markdown),
@@ -92,6 +95,23 @@ const createSocket = (server, { markdown }) => {
         socketSet.add(socket);
         socket.emit('connected', { title: markdownFilename });
         log.debug('[reveal]', 'user connected', socketSet.size);
+
+        socket.on('role-update', (role) => {
+            if (role === 'master') {
+                if (masterSocket) {
+                    masterSocket.emit('role-tick');
+                }
+                masterSocket = socket;
+            }
+        });
+
+        socket.on('slidechanged', (state) => {
+            socketSet.forEach((sock) => {
+                if (sock !== masterSocket) {
+                    sock.emit('slidechanged', state);
+                }
+            });
+        });
     });
 };
 
