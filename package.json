@@ -24,6 +24,7 @@
     "fs-extra": "^3.0.1",
     "koa": "^2.2.0",
     "koa-send": "^4.1.0",
+    "log-util": "^1.2.0",
     "update-notifier": "^2.1.0",
     "yargs": "^8.0.1"
   }
