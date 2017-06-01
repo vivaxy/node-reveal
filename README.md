@@ -20,7 +20,9 @@
 
 See [reveal.js](https://github.com/hakimel/reveal.js#markdown) for reference.
 
-Use `---` as slides separator.
+Use `\r\n----\r\n` as horizontal slides separator.
+Use `\r\n---\r\n` as vertical slides separator.
+Use `Note:` as speaker notes separator.
 
 ## Support
 
@@ -61,14 +63,17 @@ Update `package.json`
 
 ##### Options
 
-| name                  | type      | isRequired    | default           | description                   |
-| ---                   | ---       | ---           | ---               | ---                           |
-| `--markdown`          | string    | ✔             | N/A               | markdown file                 |
-| `--theme`             | string    | ✖             | `solarized`       | `reveal.js` theme             |
-| `--highlight-theme`   | string    | ✖             | `solarized-light` | `highlight.js` theme          |
-| `--transition`        | string    | ✖             | `slide`           | `reveal.js` slide type        |
-| `--port`              | number    | ✖             | `8080`            | server port                   |
-| `--watch`             | boolean   | ✖             | `false`           | reload when markdown changed  |
+| name                      | type      | isRequired    | default               | description                   |
+| ---                       | ---       | ---           | ---                   | ---                           |
+| `--markdown`              | string    | ✔             | N/A                   | markdown file                 |
+| `--theme`                 | string    | ✖             | `solarized`           | `reveal.js` theme             |
+| `--highlight-theme`       | string    | ✖             | `solarized-light`     | `highlight.js` theme          |
+| `--transition`            | string    | ✖             | `slide`               | `reveal.js` slide type        |
+| `--port`                  | number    | ✖             | `8080`                | server port                   |
+| `--watch`                 | boolean   | ✖             | `false`               | reload when markdown changed  |
+| `--separator`             | string    | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator   |
+| `--separator-vertical`    | string    | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
+| `--separator-notes`       | string    | ✖             | `^Note:`              | speaker notes separator       |
 
 ## Prior Art
 

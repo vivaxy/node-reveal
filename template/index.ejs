@@ -18,7 +18,13 @@
 <body>
 <div class="reveal">
     <div class="slides">
-        <section data-markdown="/node-reveal/reveal.md"></section>
+        <section
+            data-markdown="/node-reveal/reveal.md"
+            data-separator="<%= separator %>"
+            data-separator-vertical="<%= separatorVertical %>"
+            data-separator-notes="<%= separatorNotes %>"
+        >
+        </section>
     </div>
 </div>
 <script src="/reveal.js/lib/js/head.min.js"></script>
@@ -38,6 +44,9 @@
         showNotes: isMaster,
 
         transition: '<%= transition %>',
+
+//        parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+//        parallaxBackgroundSize: '2100px 900px',
 
         dependencies: [
             {

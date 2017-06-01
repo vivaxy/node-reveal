@@ -31,15 +31,22 @@ const readFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
 };
 
-const renderIndexHtml = async({ theme, highlightTheme, transition }) => {
+const renderIndexHtml = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
     const template = await readFile(templatePath);
     const render = ejs.compile(template);
-    return render({ theme, highlightTheme, transition });
+    return render({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes });
 };
 
-const responseIndex = async({ theme, highlightTheme, transition }) => {
+const responseIndex = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
     return {
-        body: await renderIndexHtml({ theme, highlightTheme, transition }),
+        body: await renderIndexHtml({
+            theme,
+            highlightTheme,
+            transition,
+            separator,
+            separatorVertical,
+            separatorNotes,
+        }),
     };
 };
 
@@ -53,7 +60,7 @@ const responses = {
     },
 };
 
-const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
+const createServer = ({ markdown, theme, highlightTheme, transition, port, separator, separatorVertical, separatorNotes }) => {
     const server = new Koa();
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
 
@@ -61,7 +68,15 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port }) => 
         const { path } = ctx.request;
         if (responses[path]) {
             const getResponse = responses[path];
-            const { body } = await getResponse({ markdown, theme, highlightTheme, transition });
+            const { body } = await getResponse({
+                markdown,
+                theme,
+                highlightTheme,
+                transition,
+                separator,
+                separatorVertical,
+                separatorNotes,
+            });
             ctx.response.status = 200;
             ctx.response.body = body;
         } else if (path.startsWith('/reveal.js')) {
@@ -124,8 +139,17 @@ const startWatch = ({ markdown }) => {
     });
 };
 
-const startServer = ({ markdown, theme, highlightTheme, transition, port, watch }) => {
-    const server = createServer({ markdown, theme, highlightTheme, transition, port });
+const startServer = ({ markdown, theme, highlightTheme, transition, port, watch, separator, separatorVertical, separatorNotes }) => {
+    const server = createServer({
+        markdown,
+        theme,
+        highlightTheme,
+        transition,
+        port,
+        separator,
+        separatorVertical,
+        separatorNotes,
+    });
     createSocket(server, { markdown });
     if (watch) {
         startWatch({ markdown });
@@ -171,12 +195,6 @@ const argsFormats = {
             log.error('[reveal]', 'Invalid transition.' + 'Use:', validTransitions.join('/'));
             process.exit(1);
         }
-        return input;
-    },
-    port: (input) => {
-        return Number(input);
-    },
-    watch: (input = false) => {
         return input;
     },
 };
@@ -231,8 +249,43 @@ exports.builder = {
         describe: 'watch markdown change',
         type: 'boolean',
     },
+    separator: {
+        default: '^\r?\n----\r?\n$',
+        describe: 'horizontal slides separator',
+        type: 'string',
+    },
+    separatorVertical: {
+        default: '^\r?\n---\r?\n$',
+        describe: 'vertical slides separator',
+        type: 'string',
+    },
+    separatorNotes: {
+        default: '^Note:',
+        describe: 'speaker notes separator',
+        type: 'string',
+    },
 };
 exports.handler = async(args) => {
-    const { markdown, theme, highlightTheme, transition, port, watch } = await parseArgs(args);
-    startServer({ markdown, theme, highlightTheme, transition, port, watch });
+    const {
+        markdown,
+        theme,
+        highlightTheme,
+        transition,
+        port,
+        watch,
+        separator,
+        separatorVertical,
+        separatorNotes,
+    } = await parseArgs(args);
+    startServer({
+        markdown,
+        theme,
+        highlightTheme,
+        transition,
+        port,
+        watch,
+        separator,
+        separatorVertical,
+        separatorNotes,
+    });
 };
