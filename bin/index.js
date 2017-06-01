@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * @since 2017-05-31 19:32:36
  * @author vivaxy
