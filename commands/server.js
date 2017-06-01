@@ -6,7 +6,6 @@
 /**
  * todo
  *  - open browser
- *  - use resolve instead of git submodule
  */
 
 const path = require('path');
@@ -21,8 +20,12 @@ const chokidar = require('chokidar');
 const createSocketIo = require('socket.io');
 
 const projectRoot = process.cwd();
-const revealRoot = path.join(__dirname, '..');
-const templatePath = path.join(revealRoot, './template/index.ejs');
+const nodeRevealRoot = path.join(__dirname, '..');
+const revealJsRoot = path.join(require.resolve('reveal.js'), '..', '..');
+const highlightJsRoot = path.join(require.resolve('highlight.js'), '..', '..');
+const socketIoClientRoot = path.join(require.resolve('socket.io-client'), '..', '..');
+const jsPolyfillsRoot = path.join(require.resolve('js-polyfills'), '..');
+const templatePath = path.join(nodeRevealRoot, './template/index.ejs');
 
 const socketSet = new Set();
 let masterSocket = null;
@@ -51,12 +54,6 @@ const responses = {
             body: await readFile(markdown),
         };
     },
-    '/socket.io-client/dist/socket.io.js': async() => {
-        const filePath = require.resolve('socket.io-client');
-        return {
-            body: await readFile(path.join(filePath, '../../dist/socket.io.js')),
-        };
-    },
 };
 
 const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
@@ -70,8 +67,14 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port }) => 
             const { body } = await getResponse({ markdown, theme, highlightTheme, transition });
             ctx.response.status = 200;
             ctx.response.body = body;
-        } else if (path.startsWith('/reveal.js') || path.startsWith('/highlight.js')) {
-            await send(ctx, path, { root: revealRoot });
+        } else if (path.startsWith('/reveal.js')) {
+            await send(ctx, path.substr(10), { root: revealJsRoot });
+        } else if (path.startsWith('/highlight.js')) {
+            await send(ctx, path.substr(13), { root: highlightJsRoot });
+        } else if (path.startsWith('/socket.io-client')) {
+            await send(ctx, path.substr(17), { root: socketIoClientRoot });
+        } else if (path.startsWith('/js-polyfills')) {
+            await send(ctx, path.substr(13), { root: jsPolyfillsRoot });
         } else {
             // to resolve images and links relative to markdown
             await send(ctx, path, { root: markdownRelativePath });
@@ -132,10 +135,10 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch 
     }
 };
 
-const getValidThemes = async(base) => {
-    const files = await glob(base + '/*.css');
+const getValidThemes = async(matching, ext) => {
+    const files = await glob(matching);
     return files.map((file) => {
-        return path.basename(file, '.css');
+        return path.basename(file, ext);
     });
 };
 
@@ -149,7 +152,7 @@ const argsFormats = {
         return input;
     },
     theme: async(input) => {
-        const validThemes = await getValidThemes(path.join(revealRoot, 'reveal.js', 'css', 'theme'));
+        const validThemes = await getValidThemes(path.join(revealJsRoot, 'css', 'theme', '*.css'), '.css');
         if (!validThemes.includes(input)) {
             log.error('[reveal]', 'Invalid theme.', 'Use:', validThemes.join('/'));
             process.exit(1);
@@ -157,7 +160,7 @@ const argsFormats = {
         return input;
     },
     highlightTheme: async(input) => {
-        const validHighlightTheme = await getValidThemes(path.join(revealRoot, 'highlight.js', 'src', 'styles'));
+        const validHighlightTheme = await getValidThemes(path.join(highlightJsRoot, 'styles', '*.css'), '.css');
         if (!validHighlightTheme.includes(input)) {
             log.error('[reveal]', 'Invalid highlight theme.', 'Use:', validHighlightTheme.join('/'));
             process.exit(1);
