@@ -11,3 +11,13 @@ const object = {
 let val;
 ({ val } = object);
 ```
+
+---
+
+```js
+// error
+const func = getFunction() || () => {};
+
+// ok
+const func = getFunction() || (() => {});
+```

@@ -68,6 +68,9 @@
     socket.on('disconnected', function() {
         console.log('[reveal]', 'disconnected');
     });
+    socket.on('reload', function() {
+        location.reload();
+    });
 </script>
 </body>
 </html>

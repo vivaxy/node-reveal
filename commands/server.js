@@ -5,7 +5,6 @@
 
 /**
  * todo
- * 2. socket to live reload
  * 3. socket to role=master
  * 4. open browser
  * 5. use resolve instead of git submodule
@@ -19,6 +18,7 @@ const log = require('log-util');
 const fse = require('fs-extra');
 const send = require('koa-send');
 const glob = require('glob-promise');
+const chokidar = require('chokidar');
 const createSocketIo = require('socket.io');
 
 const projectRoot = process.cwd();
@@ -59,7 +59,6 @@ const responses = {
 const createServer = ({ markdown, theme, highlightTheme, transition, port }) => {
     const server = new Koa();
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
-    const markdownFilename = path.basename(markdown, '.md');
 
     server.use(async(ctx) => {
         const { path } = ctx.request;
@@ -77,18 +76,40 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port }) => 
     });
     const nativeServer = server.listen(port);
     log.debug('[reveal]', 'server started on', port);
+    return nativeServer;
+};
 
-    const io = createSocketIo(nativeServer);
+const createSocket = (server, { markdown }) => {
+    const markdownFilename = path.basename(markdown, '.md');
+
+    const io = createSocketIo(server);
     io.on('connection', (socket) => {
         socket.on('disconnect', () => {
             socketSet.delete(socket);
-            io.emit('disconnected');
+            socket.emit('disconnected');
             log.debug('[reveal]', 'user disconnected', socketSet.size);
         });
         socketSet.add(socket);
         socket.emit('connected', { title: markdownFilename });
         log.debug('[reveal]', 'user connected', socketSet.size);
     });
+};
+
+const startWatch = ({ markdown }) => {
+    const watcher = chokidar.watch(markdown);
+    watcher.on('change', () => {
+        socketSet.forEach((socket) => {
+            socket.emit('reload');
+        });
+    });
+};
+
+const startServer = ({ markdown, theme, highlightTheme, transition, port, watch }) => {
+    const server = createServer({ markdown, theme, highlightTheme, transition, port });
+    createSocket(server, { markdown, watch });
+    if (watch) {
+        startWatch({ markdown });
+    }
 };
 
 const getValidThemes = async(base) => {
@@ -133,5 +154,5 @@ exports.handler = async({
                             watch = false,
                         }) => {
     await checkParameters({ markdown, theme, highlightTheme, transition, port });
-    createServer({ markdown, theme, highlightTheme, transition, port });
+    startServer({ markdown, theme, highlightTheme, transition, port, watch });
 };
