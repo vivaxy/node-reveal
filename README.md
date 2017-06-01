@@ -20,9 +20,11 @@
 
 See [reveal.js](https://github.com/hakimel/reveal.js#markdown) for reference.
 
-Use `\r?\n----\r?\n` as horizontal slides separator.
-Use `\r?\n---\r?\n` as vertical slides separator.
-Use `^Note:` as speaker notes separator.
+- Use `\r?\n----\r?\n` as horizontal slides separator.
+- Use `\r?\n---\r?\n` as vertical slides separator.
+- Use `^Note:` as speaker notes separator.
+- Use `<!-- .slide: data-background="#ff0000" -->` to customize slide styles.
+- Use `<!-- .element: class="fragment" -->` to create fragment.
 
 ## Support
 
@@ -79,6 +81,7 @@ Update `package.json`
 
 ## Prior Art
 
+- [reveal.js](https://github.com/hakimel/reveal.js)
 - [ksky521/nodePPT](https://github.com/ksky521/nodePPT)
 - [int64ago/node-reveal](https://github.com/int64ago/node-reveal)
 

@@ -92,11 +92,14 @@
     });
     if (isMaster) {
         socket.emit('role-update', 'master');
-        Reveal.addEventListener('slidechanged', function() {
-            socket.emit('slidechanged', Reveal.getState());
-        });
+        var emitNewState = function() {
+            socket.emit('reveal-state-change', Reveal.getState());
+        };
+        Reveal.addEventListener('fragmentshown', emitNewState);
+        Reveal.addEventListener('fragmenthidden', emitNewState);
+        Reveal.addEventListener('slidechanged', emitNewState);
     } else {
-        socket.on('slidechanged', function(state) {
+        socket.on('reveal-state-change', function(state) {
             Reveal.setState(state);
         });
     }

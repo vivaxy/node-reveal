@@ -120,10 +120,10 @@ const createSocket = (server, { markdown }) => {
             }
         });
 
-        socket.on('slidechanged', (state) => {
+        socket.on('reveal-state-change', (state) => {
             socketSet.forEach((sock) => {
                 if (sock !== masterSocket) {
-                    sock.emit('slidechanged', state);
+                    sock.emit('reveal-state-change', state);
                 }
             });
         });
