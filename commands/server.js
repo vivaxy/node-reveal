@@ -106,7 +106,7 @@ const startWatch = ({ markdown }) => {
 
 const startServer = ({ markdown, theme, highlightTheme, transition, port, watch }) => {
     const server = createServer({ markdown, theme, highlightTheme, transition, port });
-    createSocket(server, { markdown, watch });
+    createSocket(server, { markdown });
     if (watch) {
         startWatch({ markdown });
     }
@@ -119,40 +119,99 @@ const getValidThemes = async(base) => {
     });
 };
 
-const checkParameters = async({ markdown, theme, highlightTheme, transition, port }) => {
-    const markdownExists = await fse.pathExists(markdown);
-    if (!markdownExists) {
-        log.error('[reveal]', 'markdown is required');
-        process.exit(1);
-    }
-    const validThemes = await getValidThemes(path.join(revealRoot, 'reveal.js', 'css', 'theme'));
-    if (!validThemes.includes(theme)) {
-        log.error('[reveal]', 'valid themes:', validThemes.join('/'));
-        process.exit(1);
-    }
-    const validHighlightTheme = await getValidThemes(path.join(revealRoot, 'highlight.js', 'src', 'styles', ''));
-    if (!validHighlightTheme.includes(highlightTheme)) {
-        log.error('[reveal]', 'valid highlight themes:', validHighlightTheme.join('/'));
-        process.exit(1);
-    }
-    const validTransitions = ['none', 'fade', 'slide', 'convex', 'concave', 'zoom'];
-    if (!validTransitions.includes(transition)) {
-        log.error('[reveal]', 'valid transitions:', validTransitions.join('/'));
-        process.exit(1);
-    }
+const argsFormats = {
+    markdown: async(input) => {
+        const markdownExists = await fse.pathExists(input);
+        if (!markdownExists) {
+            log.error('[reveal]', '`markdown` is required');
+            process.exit(1);
+        }
+        return input;
+    },
+    theme: async(input) => {
+        const validThemes = await getValidThemes(path.join(revealRoot, 'reveal.js', 'css', 'theme'));
+        if (!validThemes.includes(input)) {
+            log.error('[reveal]', 'Invalid theme.', 'Use:', validThemes.join('/'));
+            process.exit(1);
+        }
+        return input;
+    },
+    highlightTheme: async(input) => {
+        const validHighlightTheme = await getValidThemes(path.join(revealRoot, 'highlight.js', 'src', 'styles'));
+        if (!validHighlightTheme.includes(input)) {
+            log.error('[reveal]', 'Invalid highlight theme.', 'Use:', validHighlightTheme.join('/'));
+            process.exit(1);
+        }
+        return input;
+    },
+    transition: async(input) => {
+        const validTransitions = ['none', 'fade', 'slide', 'convex', 'concave', 'zoom'];
+        if (!validTransitions.includes(input)) {
+            log.error('[reveal]', 'Invalid transition.' + 'Use:', validTransitions.join('/'));
+            process.exit(1);
+        }
+        return input;
+    },
+    port: (input) => {
+        return Number(input);
+    },
+    watch: (input = false) => {
+        return input;
+    },
+};
+
+const parseArgs = async(args) => {
+    const formattedArgs = {};
+    const formatArgument = async(key) => {
+        const format = argsFormats[key];
+        const value = args[key];
+        if (format) {
+            return await format(value);
+        }
+        return value;
+    };
+    const formatJobs = Object.keys(args).map(async(key) => {
+        return formattedArgs[key] = await formatArgument(key);
+    });
+    await Promise.all(formatJobs);
+    return formattedArgs;
 };
 
 exports.command = 'server';
 exports.describe = 'Start a nodejs server to display presentation';
-exports.builder = {};
-exports.handler = async({
-                            markdown,
-                            theme = 'solarized',
-                            highlightTheme = 'solarized-light',
-                            transition = 'slide',
-                            port = 8080,
-                            watch = false,
-                        }) => {
-    await checkParameters({ markdown, theme, highlightTheme, transition, port });
+exports.builder = {
+    markdown: {
+        demandOption: true,
+        describe: 'markdown file',
+        type: 'string',
+    },
+    theme: {
+        default: 'solarized',
+        type: 'string',
+        describe: 'reveal.js theme',
+    },
+    highlightTheme: {
+        default: 'solarized-light',
+        type: 'string',
+        describe: 'highlight.js theme',
+    },
+    transition: {
+        default: 'slide',
+        type: 'string',
+        describe: 'reveal.js transition',
+    },
+    port: {
+        default: 8080,
+        describe: 'server port',
+        type: 'number',
+    },
+    watch: {
+        default: false,
+        describe: 'watch markdown change',
+        type: 'boolean',
+    },
+};
+exports.handler = async(args) => {
+    const { markdown, theme, highlightTheme, transition, port, watch } = await parseArgs(args);
     startServer({ markdown, theme, highlightTheme, transition, port, watch });
 };
