@@ -74,7 +74,6 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
                 separatorVertical,
                 separatorNotes,
             });
-            ctx.response.status = 200;
             ctx.response.body = body;
         } else {
             await next();

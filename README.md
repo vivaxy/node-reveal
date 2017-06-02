@@ -63,7 +63,16 @@ Update `package.json`
 
 ##### Basic Usage
 
-`reveal start --markdown ./ppt/reveal.md --theme solarized --highlight-theme solarized-light --transition slide --port 8080 --watch`
+`reveal start \
+--markdown ./ppt/reveal.md \
+--theme solarized \
+--highlight-theme solarized-light \
+--transition slide \
+--port 8080 \
+--watch \
+--separator '^\r?\n----\r?\n$' \
+--separator-vertical '^\r?\n---\r?\n$' \
+--separator-notes '^Note:'`
 
 ##### Options
 
