@@ -20,11 +20,9 @@ const nodeRevealRoot = path.join(__dirname, '..');
 const revealJsRoot = path.join(require.resolve('reveal.js'), '..', '..');
 const highlightJsRoot = path.join(require.resolve('highlight.js'), '..', '..');
 const socketIoClientRoot = path.join(require.resolve('socket.io-client'), '..', '..');
-const jsPolyfillsRoot = path.join(require.resolve('js-polyfills'), '..');
 const templatePath = path.join(nodeRevealRoot, './template/index.ejs');
 
 const socketSet = new Set();
-let masterSocket = null;
 
 const readTextFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
@@ -101,14 +99,11 @@ const createKoaBeginningPathMiddleware = ({ markdown }) => {
         '/socket.io-client': async(ctx, path) => {
             await send(ctx, path, socketIoClientRoot);
         },
-        '/js-polyfills': async(ctx, path) => {
-            await send(ctx, path, jsPolyfillsRoot);
-        },
     };
 
     const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
 
-    return async(ctx, next) => {
+    return async(ctx) => {
         const { path } = ctx.request;
 
         const [_1, beginningPath, ...restPath] = path.split('/');
@@ -153,23 +148,6 @@ const createSocket = (server, { markdown }) => {
         socketSet.add(socket);
         socket.emit('connected', { title: markdownFilename });
         log.debug('[reveal]', 'user connected', socketSet.size);
-
-        socket.on('role-update', (role) => {
-            if (role === 'master') {
-                if (masterSocket) {
-                    masterSocket.emit('role-tick');
-                }
-                masterSocket = socket;
-            }
-        });
-
-        socket.on('reveal-state-change', (state) => {
-            socketSet.forEach((sock) => {
-                if (sock !== masterSocket) {
-                    sock.emit('reveal-state-change', state);
-                }
-            });
-        });
     });
 };
 
@@ -197,7 +175,7 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
     if (watch) {
         startWatch({ markdown });
     }
-    openBrowser(`http://${ip.address()}:${port}/?role=#/`);
+    openBrowser(`http://${ip.address()}:${port}/`);
 };
 
 const getValidThemes = async(matching, ext) => {

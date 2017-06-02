@@ -29,19 +29,13 @@
 </div>
 <script src="/reveal.js/lib/js/head.min.js"></script>
 <script src="/reveal.js/js/reveal.js"></script>
-<script src="/js-polyfills/url.js"></script>
 <script>
-
-    var url = new URL(location.href);
-    var isMaster = url.searchParams.get('role') === 'master';
-
     Reveal.initialize({
 
         controls: true,
         progress: true,
         history: true,
         center: true,
-        showNotes: isMaster,
 
         transition: '<%= transition %>',
 
@@ -86,23 +80,6 @@
     socket.on('reload', function() {
         location.reload();
     });
-    socket.on('role-tick', function() {
-        url.searchParams.set('role', '');
-        location.href = url;
-    });
-    if (isMaster) {
-        socket.emit('role-update', 'master');
-        var emitNewState = function() {
-            socket.emit('reveal-state-change', Reveal.getState());
-        };
-        Reveal.addEventListener('fragmentshown', emitNewState);
-        Reveal.addEventListener('fragmenthidden', emitNewState);
-        Reveal.addEventListener('slidechanged', emitNewState);
-    } else {
-        socket.on('reveal-state-change', function(state) {
-            Reveal.setState(state);
-        });
-    }
 </script>
 </body>
 </html>

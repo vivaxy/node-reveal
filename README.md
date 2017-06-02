@@ -9,16 +9,16 @@
 
 ## Feature
 
+Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
+
 - Easy to setup. No cloning repositories. No template files.
 - Markdown files as slides content.
 - Auto reload when markdown file changes.
-- Master controls all clients.
+- Speaker view.
 - Theme config.
-- Support inline html.
+- Inline html.
 
-## Markdown Syntax
-
-See [reveal.js](https://github.com/hakimel/reveal.js#markdown) for reference.
+## Notable Markdown Syntax
 
 - Use `\r?\n----\r?\n` as horizontal slides separator.
 - Use `\r?\n---\r?\n` as vertical slides separator.
@@ -55,11 +55,14 @@ Update `package.json`
 
 `> npm start`
 
-### Speaker controls
+### Keyboard Shortcuts
 
-Change link to `...?role=master#...`. This will show speaker's notes.
-
-New connections as `role=master` will override previous master connections, so only one master controls will exists.
+- `Up`, `Down`, `Left`, `Right`: Navigation
+- `f`: Full-screen
+- `s`: Show slide notes
+- `o`: Toggle overview
+- `.` (`Period`, `b` or `/`): Turn screen black
+- `Esc`: Escape from full-screen, or toggle overview
 
 ## Advanced Usage
 
