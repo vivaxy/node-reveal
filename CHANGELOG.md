@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/vivaxy/node-reveal/compare/v0.5.1...v1.0.0) (2017-06-02)
+
+
+### Features
+
+* **bin:** :sparkles:Demand command in command line usage. ([8a47117](https://github.com/vivaxy/node-reveal/commit/8a47117))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/vivaxy/node-reveal/compare/v0.5.0...v0.5.1) (2017-06-01)
 
