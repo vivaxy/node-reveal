@@ -10,7 +10,6 @@ const ejs = require('ejs');
 const Koa = require('koa');
 const log = require('log-util');
 const fse = require('fs-extra');
-const send = require('koa-send');
 const glob = require('glob-promise');
 const chokidar = require('chokidar');
 const createSocketIo = require('socket.io');
@@ -27,12 +26,16 @@ const templatePath = path.join(nodeRevealRoot, './template/index.ejs');
 const socketSet = new Set();
 let masterSocket = null;
 
-const readFile = async(filePath) => {
+const readTextFile = async(filePath) => {
     return await fse.readFile(filePath, 'utf8');
 };
 
+const getResponseType = (filename) => {
+    return path.extname(filename);
+};
+
 const renderIndexHtml = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
-    const template = await readFile(templatePath);
+    const template = await readTextFile(templatePath);
     const render = ejs.compile(template);
     return render({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes });
 };
@@ -56,7 +59,7 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
         '/index.html': responseIndex,
         '/node-reveal/reveal.md': async({ markdown }) => {
             return {
-                body: await readFile(markdown),
+                body: await readTextFile(markdown),
             };
         },
     };
@@ -75,6 +78,7 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
                 separatorNotes,
             });
             ctx.response.body = body;
+            ctx.response.type = getResponseType(path);
         } else {
             await next();
         }
@@ -82,18 +86,23 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
 };
 
 const createKoaBeginningPathMiddleware = ({ markdown }) => {
+    const send = async(ctx, relativePath, root) => {
+        ctx.response.body = await fse.readFile((path.join(root, relativePath)));
+        ctx.response.type = getResponseType(relativePath);
+    };
+
     const responsesForBeginningPath = {
         '/reveal.js': async(ctx, path) => {
-            await send(ctx, path, { root: revealJsRoot });
+            await send(ctx, path, revealJsRoot);
         },
         '/highlight.js': async(ctx, path) => {
-            await send(ctx, path, { root: highlightJsRoot });
+            await send(ctx, path, highlightJsRoot);
         },
         '/socket.io-client': async(ctx, path) => {
-            await send(ctx, path, { root: socketIoClientRoot });
+            await send(ctx, path, socketIoClientRoot);
         },
         '/js-polyfills': async(ctx, path) => {
-            await send(ctx, path, { root: jsPolyfillsRoot });
+            await send(ctx, path, jsPolyfillsRoot);
         },
     };
 
@@ -108,7 +117,7 @@ const createKoaBeginningPathMiddleware = ({ markdown }) => {
             await getResponseForBeginningPath(ctx, `/${restPath.join('/')}`);
         } else {
             // to resolve images and links relative to markdown
-            await send(ctx, path, { root: markdownRelativePath });
+            await send(ctx, path, markdownRelativePath);
         }
     };
 };
@@ -251,7 +260,7 @@ const parseArgs = async(args) => {
 };
 
 exports.command = 'server';
-exports.describe = 'Start a nodejs server to display presentation';
+exports.describe = 'Start a local server';
 exports.builder = {
     markdown: {
         demandOption: true,
