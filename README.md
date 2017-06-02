@@ -63,7 +63,8 @@ Update `package.json`
 
 ##### Basic Usage
 
-`reveal start \
+```sh
+reveal start \
 --markdown ./ppt/reveal.md \
 --theme solarized \
 --highlight-theme solarized-light \
@@ -72,7 +73,8 @@ Update `package.json`
 --watch \
 --separator '^\r?\n----\r?\n$' \
 --separator-vertical '^\r?\n---\r?\n$' \
---separator-notes '^Note:'`
+--separator-notes '^Note:'
+```
 
 ##### Options
 
