@@ -55,6 +55,12 @@ Update `package.json`
 
 `> npm start`
 
+### Speaker controls
+
+Change link to `...?role=master#...`. This will show speaker's notes.
+
+New connections as `role=master` will override previous master connections, so only one master controls will exists.
+
 ## Advanced Usage
 
 ### Commands
