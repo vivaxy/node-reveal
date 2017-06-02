@@ -12,6 +12,7 @@ const pkg = require('../package.json');
 const configureYargs = () => {
     return yargs
         .commandDir('../commands')
+        .demandCommand()
         .help()
         .version()
         .argv._;

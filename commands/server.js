@@ -50,24 +50,21 @@ const responseIndex = async({ theme, highlightTheme, transition, separator, sepa
     };
 };
 
-const responses = {
-    '/': responseIndex,
-    '/index.html': responseIndex,
-    '/node-reveal/reveal.md': async({ markdown }) => {
-        return {
-            body: await readFile(markdown),
-        };
-    },
-};
+const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
+    const responses = {
+        '/': responseIndex,
+        '/index.html': responseIndex,
+        '/node-reveal/reveal.md': async({ markdown }) => {
+            return {
+                body: await readFile(markdown),
+            };
+        },
+    };
 
-const createServer = ({ markdown, theme, highlightTheme, transition, port, separator, separatorVertical, separatorNotes }) => {
-    const server = new Koa();
-    const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
-
-    server.use(async(ctx) => {
+    return async(ctx, next) => {
         const { path } = ctx.request;
-        if (responses[path]) {
-            const getResponse = responses[path];
+        const getResponse = responses[path];
+        if (getResponse) {
             const { body } = await getResponse({
                 markdown,
                 theme,
@@ -79,19 +76,57 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port, separ
             });
             ctx.response.status = 200;
             ctx.response.body = body;
-        } else if (path.startsWith('/reveal.js')) {
-            await send(ctx, path.substr(10), { root: revealJsRoot });
-        } else if (path.startsWith('/highlight.js')) {
-            await send(ctx, path.substr(13), { root: highlightJsRoot });
-        } else if (path.startsWith('/socket.io-client')) {
-            await send(ctx, path.substr(17), { root: socketIoClientRoot });
-        } else if (path.startsWith('/js-polyfills')) {
-            await send(ctx, path.substr(13), { root: jsPolyfillsRoot });
+        } else {
+            await next();
+        }
+    };
+};
+
+const createKoaBeginningPathMiddleware = ({ markdown }) => {
+    const responsesForBeginningPath = {
+        '/reveal.js': async(ctx, path) => {
+            await send(ctx, path, { root: revealJsRoot });
+        },
+        '/highlight.js': async(ctx, path) => {
+            await send(ctx, path, { root: highlightJsRoot });
+        },
+        '/socket.io-client': async(ctx, path) => {
+            await send(ctx, path, { root: socketIoClientRoot });
+        },
+        '/js-polyfills': async(ctx, path) => {
+            await send(ctx, path, { root: jsPolyfillsRoot });
+        },
+    };
+
+    const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
+
+    return async(ctx, next) => {
+        const { path } = ctx.request;
+
+        const [_1, beginningPath, ...restPath] = path.split('/');
+        const getResponseForBeginningPath = responsesForBeginningPath[`/${beginningPath}`];
+        if (getResponseForBeginningPath) {
+            await getResponseForBeginningPath(ctx, `/${restPath.join('/')}`);
         } else {
             // to resolve images and links relative to markdown
             await send(ctx, path, { root: markdownRelativePath });
         }
-    });
+    };
+};
+
+const createServer = ({ markdown, theme, highlightTheme, transition, port, separator, separatorVertical, separatorNotes }) => {
+    const server = new Koa();
+
+    server.use(createKoaSpecificPathMiddleware({
+        markdown,
+        theme,
+        highlightTheme,
+        transition,
+        separator,
+        separatorVertical,
+        separatorNotes,
+    }));
+    server.use(createKoaBeginningPathMiddleware({ markdown }));
     const nativeServer = server.listen(port);
     log.debug('[reveal]', 'server started on', port);
     return nativeServer;
