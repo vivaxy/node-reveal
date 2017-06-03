@@ -3,7 +3,7 @@
  * @author vivaxy
  */
 
-const path = require('path');
+const nodePath = require('path');
 
 const ip = require('ip');
 const ejs = require('ejs');
@@ -16,11 +16,11 @@ const createSocketIo = require('socket.io');
 const openBrowser = require('react-dev-utils/openBrowser');
 
 const projectRoot = process.cwd();
-const nodeRevealRoot = path.join(__dirname, '..');
-const revealJsRoot = path.join(require.resolve('reveal.js'), '..', '..');
-const highlightJsRoot = path.join(require.resolve('highlight.js'), '..', '..');
-const socketIoClientRoot = path.join(require.resolve('socket.io-client'), '..', '..');
-const templatePath = path.join(nodeRevealRoot, './template/index.ejs');
+const nodeRevealRoot = nodePath.join(__dirname, '..');
+const revealJsRoot = nodePath.join(require.resolve('reveal.js'), '..', '..');
+const highlightJsRoot = nodePath.join(require.resolve('highlight.js'), '..', '..');
+const socketIoClientRoot = nodePath.join(require.resolve('socket.io-client'), '..', '..');
+const templatePath = nodePath.join(nodeRevealRoot, './template/index.ejs');
 
 const socketSet = new Set();
 
@@ -29,7 +29,7 @@ const readTextFile = async(filePath) => {
 };
 
 const getResponseType = (filename) => {
-    return path.extname(filename);
+    return nodePath.extname(filename);
 };
 
 const renderIndexHtml = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
@@ -85,11 +85,14 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
 
 const createKoaBeginningPathMiddleware = ({ markdown }) => {
     const send = async(ctx, relativePath, root) => {
-        ctx.response.body = await fse.readFile((path.join(root, relativePath)));
+        ctx.response.body = await fse.readFile((nodePath.join(root, relativePath)));
         ctx.response.type = getResponseType(relativePath);
     };
 
     const responsesForBeginningPath = {
+        '/node-reveal': async(ctx, path) => {
+            await send(ctx, path, nodeRevealRoot);
+        },
         '/reveal.js': async(ctx, path) => {
             await send(ctx, path, revealJsRoot);
         },
@@ -101,7 +104,7 @@ const createKoaBeginningPathMiddleware = ({ markdown }) => {
         },
     };
 
-    const markdownRelativePath = path.relative(projectRoot, path.dirname(markdown));
+    const markdownRelativePath = nodePath.relative(projectRoot, nodePath.dirname(markdown));
 
     return async(ctx) => {
         const { path } = ctx.request;
@@ -131,23 +134,22 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port, separ
     }));
     server.use(createKoaBeginningPathMiddleware({ markdown }));
     const nativeServer = server.listen(port);
-    log.debug('[reveal]', 'server started on', port);
+    log.info('[server]', 'started on', port);
     return nativeServer;
 };
 
 const createSocket = (server, { markdown }) => {
-    const markdownFilename = path.basename(markdown, '.md');
+    const markdownFilename = nodePath.basename(markdown, '.md');
 
     const io = createSocketIo(server);
     io.on('connection', (socket) => {
         socket.on('disconnect', () => {
             socketSet.delete(socket);
-            socket.emit('disconnected');
-            log.debug('[reveal]', 'user disconnected', socketSet.size);
+            log.debug('[server]', 'user disconnected', socketSet.size);
         });
         socketSet.add(socket);
         socket.emit('connected', { title: markdownFilename });
-        log.debug('[reveal]', 'user connected', socketSet.size);
+        log.debug('[server]', 'user connected', socketSet.size);
     });
 };
 
@@ -181,7 +183,7 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
 const getValidThemes = async(matching, ext) => {
     const files = await glob(matching);
     return files.map((file) => {
-        return path.basename(file, ext);
+        return nodePath.basename(file, ext);
     });
 };
 
@@ -189,23 +191,23 @@ const argsFormats = {
     markdown: async(input) => {
         const markdownExists = await fse.pathExists(input);
         if (!markdownExists) {
-            log.error('[reveal]', 'Invalid markdown file');
+            log.error('[server]', 'Invalid markdown file');
             process.exit(1);
         }
         return input;
     },
     theme: async(input) => {
-        const validThemes = await getValidThemes(path.join(revealJsRoot, 'css', 'theme', '*.css'), '.css');
+        const validThemes = await getValidThemes(nodePath.join(revealJsRoot, 'css', 'theme', '*.css'), '.css');
         if (!validThemes.includes(input)) {
-            log.error('[reveal]', 'Invalid theme.', 'Use:', validThemes.join('/'));
+            log.error('[server]', 'Invalid theme.', 'Use:', validThemes.join('/'));
             process.exit(1);
         }
         return input;
     },
     highlightTheme: async(input) => {
-        const validHighlightTheme = await getValidThemes(path.join(highlightJsRoot, 'styles', '*.css'), '.css');
+        const validHighlightTheme = await getValidThemes(nodePath.join(highlightJsRoot, 'styles', '*.css'), '.css');
         if (!validHighlightTheme.includes(input)) {
-            log.error('[reveal]', 'Invalid highlight theme.', 'Use:', validHighlightTheme.join('/'));
+            log.error('[server]', 'Invalid highlight theme.', 'Use:', validHighlightTheme.join('/'));
             process.exit(1);
         }
         return input;
@@ -213,7 +215,7 @@ const argsFormats = {
     transition: async(input) => {
         const validTransitions = ['none', 'fade', 'slide', 'convex', 'concave', 'zoom'];
         if (!validTransitions.includes(input)) {
-            log.error('[reveal]', 'Invalid transition.' + 'Use:', validTransitions.join('/'));
+            log.error('[server]', 'Invalid transition.' + 'Use:', validTransitions.join('/'));
             process.exit(1);
         }
         return input;
@@ -285,6 +287,10 @@ exports.builder = {
         describe: 'speaker notes separator',
         type: 'string',
     },
+    logLevel: {
+        default: 2,
+        describe: 'log level',
+    },
 };
 exports.handler = async(args) => {
     const {
@@ -297,7 +303,11 @@ exports.handler = async(args) => {
         separator,
         separatorVertical,
         separatorNotes,
+        logLevel,
     } = await parseArgs(args);
+
+    log.setLevel(logLevel);
+
     startServer({
         markdown,
         theme,

@@ -1,5 +1,7 @@
 # node-reveal
 
+![node-reveal](./assets/icon/node-reveal.jpg)
+
 🎁 A reveal.js cli
 
 [![NPM Version][npm-version-image]][npm-url]
@@ -74,30 +76,32 @@ Update `package.json`
 
 ```sh
 reveal start \
---markdown ./ppt/reveal.md \
---theme solarized \
---highlight-theme solarized-light \
---transition slide \
---port 8080 \
---watch \
---separator '^\r?\n----\r?\n$' \
---separator-vertical '^\r?\n---\r?\n$' \
---separator-notes '^Note:'
+    --markdown ./ppt/reveal.md \
+    --theme solarized \
+    --highlight-theme solarized-light \
+    --transition slide \
+    --port 8080 \
+    --watch \
+    --separator '^\r?\n----\r?\n$' \
+    --separator-vertical '^\r?\n---\r?\n$' \
+    --separator-notes '^Note:'
+    --log-level 2
 ```
 
 ##### Options
 
-| name                      | type      | isRequired    | default               | description                   |
-| ---                       | ---       | ---           | ---                   | ---                           |
-| `--markdown`              | string    | ✔             | N/A                   | markdown file                 |
-| `--theme`                 | string    | ✖             | `solarized`           | `reveal.js` theme             |
-| `--highlight-theme`       | string    | ✖             | `solarized-light`     | `highlight.js` theme          |
-| `--transition`            | string    | ✖             | `slide`               | `reveal.js` slide type        |
-| `--port`                  | number    | ✖             | `8080`                | server port                   |
-| `--watch`                 | boolean   | ✖             | `false`               | reload when markdown changed  |
-| `--separator`             | string    | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator   |
-| `--separator-vertical`    | string    | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
-| `--separator-notes`       | string    | ✖             | `^Note:`              | speaker notes separator       |
+| name                      | type          | isRequired    | default               | description                   |
+| ---                       | ---           | ---           | ---                   | ---                           |
+| `--markdown`              | string        | ✔             | N/A                   | markdown file                 |
+| `--theme`                 | string        | ✖             | `solarized`           | `reveal.js` theme             |
+| `--highlight-theme`       | string        | ✖             | `solarized-light`     | `highlight.js` theme          |
+| `--transition`            | string        | ✖             | `slide`               | `reveal.js` slide type        |
+| `--port`                  | number        | ✖             | `8080`                | server port                   |
+| `--watch`                 | boolean       | ✖             | `false`               | reload when markdown changed  |
+| `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator   |
+| `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
+| `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
+| `--log-level`             | number/string | ✖             | `2`                   | log output level              |
 
 ## Prior Art
 
