@@ -26,6 +26,7 @@
     "chokidar": "^1.7.0",
     "ejs": "^2.5.6",
     "fs-extra": "^3.0.1",
+    "get-port": "^3.1.0",
     "glob": "^7.1.2",
     "glob-promise": "^3.1.0",
     "highlight.js": "^9.12.0",

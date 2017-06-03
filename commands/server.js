@@ -11,6 +11,7 @@ const Koa = require('koa');
 const log = require('log-util');
 const fse = require('fs-extra');
 const glob = require('glob-promise');
+const getPort = require('get-port');
 const chokidar = require('chokidar');
 const createSocketIo = require('socket.io');
 const openBrowser = require('react-dev-utils/openBrowser');
@@ -220,6 +221,12 @@ const argsFormats = {
         }
         return input;
     },
+    port: async(input) => {
+        if (!input) {
+            return await getPort();
+        }
+        return input;
+    },
 };
 
 const parseArgs = async(args) => {
@@ -263,7 +270,6 @@ exports.builder = {
         describe: 'reveal.js transition',
     },
     port: {
-        default: 8080,
         describe: 'server port',
         type: 'number',
     },

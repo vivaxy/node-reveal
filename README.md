@@ -96,7 +96,7 @@ reveal start \
 | `--theme`                 | string        | ✖             | `solarized`           | `reveal.js` theme             |
 | `--highlight-theme`       | string        | ✖             | `solarized-light`     | `highlight.js` theme          |
 | `--transition`            | string        | ✖             | `slide`               | `reveal.js` slide type        |
-| `--port`                  | number        | ✖             | `8080`                | server port                   |
+| `--port`                  | number        | ✖             | a valid port          | server port                   |
 | `--watch`                 | boolean       | ✖             | `false`               | reload when markdown changed  |
 | `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator   |
 | `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
