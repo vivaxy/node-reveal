@@ -178,7 +178,11 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
     if (watch) {
         startWatch({ markdown });
     }
-    openBrowser(`http://${ip.address()}:${port}/`);
+    const openBrowserFunc = () => {
+        openBrowser(`http://${ip.address()}:${port}/`);
+    };
+    openBrowserFunc();
+    process.stdin.on('data', openBrowserFunc);
 };
 
 const getValidThemes = async(matching, ext) => {

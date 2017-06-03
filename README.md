@@ -59,12 +59,16 @@ Update `package.json`
 
 ### Keyboard Shortcuts
 
+- `Space`: Next
 - `Up`, `Down`, `Left`, `Right`: Navigation
+- `k`, `j`, `h`, `l`: Navigation
 - `f`: Full-screen
 - `s`: Show slide notes
 - `o`: Toggle overview
-- `.` (`Period`, `b` or `/`): Turn screen black
+- `.` (`Period`, `b`, `v` or `/`): Turn screen black
 - `Esc`: Escape from full-screen, or toggle overview
+- `alt + left click`: Toggle zoom
+- `p`, `n`: Previous and next
 
 ## Advanced Usage
 
@@ -102,6 +106,10 @@ reveal start \
 | `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
 | `--log-level`             | number/string | ✖             | `2`                   | log output level              |
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Prior Art
 
