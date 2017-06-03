@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/vivaxy/node-reveal/compare/v1.0.0...v1.1.0) (2017-06-03)
+
+
+### Features
+
+* **server:** :sparkles:Remove role controls ([3301ec4](https://github.com/vivaxy/node-reveal/commit/3301ec4))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/vivaxy/node-reveal/compare/v0.5.1...v1.0.0) (2017-06-02)
 
