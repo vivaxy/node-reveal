@@ -30,10 +30,6 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 - Use `<!-- .slide: data-background="#ff0000" -->` to customize slide styles.
 - Use `<!-- .element: class="fragment" -->` to create fragment.
 
-## Support
-
-node.js@v8
-
 ## Basic Usage
 
 ### Installation
@@ -108,6 +104,10 @@ reveal start \
 | `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
 | `--log-level`             | number/string | ✖             | `2`                   | log output level              |
+
+## Support
+
+node >= v7.10
 
 ## Change Log
 
