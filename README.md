@@ -1,6 +1,6 @@
 # node-reveal
 
-![node-reveal](./assets/icon/node-reveal.jpg)
+![node-reveal](assets/icons/node-reveal.jpg)
 
 🎁 A reveal.js cli
 
@@ -8,6 +8,8 @@
 [![NPM Downloads][npm-downloads-image]][npm-url]
 [![MIT License][license-image]][license-url]
 [![Standard Version][standard-version-image]][standard-version-url]
+
+![screenshot-1](assets/screenshots/screenshot-1.png)
 
 ## Feature
 
@@ -107,7 +109,7 @@ reveal start \
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
 | `--log-level`             | number/string | ✖             | `2`                   | log output level              |
 
-## Changelog
+## Change Log
 
 See [CHANGELOG.md](CHANGELOG.md).
 

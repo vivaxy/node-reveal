@@ -3,25 +3,17 @@
 ### h3
 #### h4
 ##### h5
+###### h6
 
-----
-
-- list1
-- list2
-    - item1
-    - item2
-
-----
-
-note
+paragraph
 
 Note:
 
-test node content
+This is note content.
 
-----
+---
 
-syntax highlight
+Syntax Highlight
 
 ```js
 const object = {
@@ -34,25 +26,28 @@ let val;
 
 ----
 
-slide style
+- List1
+- List2
+    - Item1
+    - Item2
+
+----
+
+Slide Style
 
 <!-- .slide: data-background="#ff0000" -->
 
 ----
 
-fragment
+Fragment
 
 - Item 1 <!-- .element: class="fragment" data-fragment-index="2" -->
 - Item 2 <!-- .element: class="fragment grow" data-fragment-index="1" -->
 
 ---
 
-vertical slide
-
-----
-
 ![img](./parallax.jpg)
 
 ----
 
-end
+End
