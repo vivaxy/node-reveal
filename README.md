@@ -36,7 +36,7 @@ node.js@v8
 
 ## Basic Usage
 
-### Install
+### Installation
 
 `yarn add @vivaxy/reveal`
 
