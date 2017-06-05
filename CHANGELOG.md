@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/vivaxy/node-reveal/compare/v1.2.0...v1.3.0) (2017-06-05)
+
+
+### Features
+
+* **server:** :sparkles:Reopen browser if user inputs anything in terminal ([7080d69](https://github.com/vivaxy/node-reveal/commit/7080d69))
+* **server:** :sparkles:Show notes when `watch` is on ([ea87f6f](https://github.com/vivaxy/node-reveal/commit/ea87f6f))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/vivaxy/node-reveal/compare/v1.1.0...v1.2.0) (2017-06-03)
 
