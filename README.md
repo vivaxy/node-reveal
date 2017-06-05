@@ -115,7 +115,8 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Prior Art
 
-- [reveal.js](https://github.com/hakimel/reveal.js)
+- [hakimel/reveal.js](https://github.com/hakimel/reveal.js)
+- [webpro/reveal-md](https://github.com/webpro/reveal-md)
 - [ksky521/nodePPT](https://github.com/ksky521/nodePPT)
 - [int64ago/node-reveal](https://github.com/int64ago/node-reveal)
 
