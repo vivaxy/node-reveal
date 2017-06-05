@@ -33,18 +33,19 @@ const getResponseType = (filename) => {
     return nodePath.extname(filename);
 };
 
-const renderIndexHtml = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
+const renderIndexHtml = async({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
     const template = await readTextFile(templatePath);
     const render = ejs.compile(template);
-    return render({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes });
+    return render({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes });
 };
 
-const responseIndex = async({ theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
+const responseIndex = async({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
     return {
         body: await renderIndexHtml({
             theme,
             highlightTheme,
             transition,
+            watch,
             separator,
             separatorVertical,
             separatorNotes,
@@ -52,7 +53,7 @@ const responseIndex = async({ theme, highlightTheme, transition, separator, sepa
     };
 };
 
-const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, transition, separator, separatorVertical, separatorNotes }) => {
+const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
     const responses = {
         '/': responseIndex,
         '/index.html': responseIndex,
@@ -72,6 +73,7 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
                 theme,
                 highlightTheme,
                 transition,
+                watch,
                 separator,
                 separatorVertical,
                 separatorNotes,
@@ -121,7 +123,7 @@ const createKoaBeginningPathMiddleware = ({ markdown }) => {
     };
 };
 
-const createServer = ({ markdown, theme, highlightTheme, transition, port, separator, separatorVertical, separatorNotes }) => {
+const createServer = ({ markdown, theme, highlightTheme, transition, port, watch, separator, separatorVertical, separatorNotes }) => {
     const server = new Koa();
 
     server.use(createKoaSpecificPathMiddleware({
@@ -129,6 +131,7 @@ const createServer = ({ markdown, theme, highlightTheme, transition, port, separ
         theme,
         highlightTheme,
         transition,
+        watch,
         separator,
         separatorVertical,
         separatorNotes,
@@ -170,6 +173,7 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
         highlightTheme,
         transition,
         port,
+        watch,
         separator,
         separatorVertical,
         separatorNotes,
