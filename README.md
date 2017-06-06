@@ -105,6 +105,22 @@ reveal start \
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
 | `--log-level`             | number/string | ✖             | `2`                   | log output level              |
 
+### url parameters
+
+#### `print-pdf`
+
+Used to print as pdf files.
+
+Add `?print-pdf&showNotes=true`, like: `http://127.0.0.1:3000/?print-pdf&showNotes=true#/`.
+
+Press `Ctrl/Command + p` to open print dialog.
+
+#### `showNotes`
+
+Show speakers notes.
+
+Add `?showNotes=true`, like: `http://127.0.0.1:3000/?showNotes=true#/`.
+
 ## Support
 
 node >= v7.10

@@ -182,8 +182,14 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
     if (watch) {
         startWatch({ markdown });
     }
+    const getOpenURL = () => {
+        if (watch) {
+            return `http://${ip.address()}:${port}/?showNotes=true`;
+        }
+        return `http://${ip.address()}:${port}/`;
+    };
     const openBrowserFunc = () => {
-        openBrowser(`http://${ip.address()}:${port}/`);
+        openBrowser(getOpenURL());
     };
     openBrowserFunc();
     process.stdin.on('data', openBrowserFunc);
