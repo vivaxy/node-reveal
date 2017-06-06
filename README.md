@@ -28,6 +28,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 - Use `\r?\n---\r?\n` as vertical slides separator.
 - Use `^Note:` as speaker notes separator.
 - Use `<!-- .slide: data-background="#ff0000" -->` to customize slide styles.
+- Use `<!-- .element: style="width: 60%;" -->` to customize element styles.
 - Use `<!-- .element: class="fragment" -->` to create fragment.
 
 ## Basic Usage
@@ -105,7 +106,7 @@ reveal start \
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
 | `--log-level`             | number/string | ✖             | `2`                   | log output level              |
 
-### url parameters
+### URL Parameters
 
 #### `print-pdf`
 
