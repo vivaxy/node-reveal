@@ -93,18 +93,18 @@ reveal start \
 
 ##### Options
 
-| name                      | type          | isRequired    | default               | description                   |
-| ---                       | ---           | ---           | ---                   | ---                           |
-| `--markdown`              | string        | ✔             | N/A                   | markdown file                 |
-| `--theme`                 | string        | ✖             | `solarized`           | `reveal.js` theme             |
-| `--highlight-theme`       | string        | ✖             | `solarized-light`     | `highlight.js` theme          |
-| `--transition`            | string        | ✖             | `slide`               | `reveal.js` slide type        |
-| `--port`                  | number        | ✖             | a valid port          | server port                   |
+| name                      | type          | isRequired    | default               | description |
+| ---                       | ---           | ---           | ---                   | ---   |
+| `--markdown`              | string        | ✔             | N/A                   | markdown file |
+| `--theme`                 | string        | ✖             | `solarized`           | [`reveal.js` theme](https://github.com/hakimel/reveal.js#theming) |
+| `--highlight-theme`       | string        | ✖             | `solarized-light`     | [`highlight.js` theme](https://highlightjs.org/static/demo/) |
+| `--transition`            | string        | ✖             | `slide`               | [`reveal.js` slide type](https://github.com/hakimel/reveal.js#configuration)  |
+| `--port`                  | number        | ✖             | a valid port          | server port |
 | `--watch`                 | boolean       | ✖             | `false`               | reload when markdown changed  |
-| `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator   |
-| `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator     |
-| `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator       |
-| `--log-level`             | number/string | ✖             | `2`                   | log output level              |
+| `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator |
+| `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator |
+| `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator |
+| `--log-level`             | number/string | ✖             | `2`                   | [log output level](https://github.com/vivaxy/log-util#log-level)  |
 
 ### URL Parameters
 
