@@ -10,12 +10,12 @@ const updateNotifier = require('update-notifier');
 const pkg = require('../package.json');
 
 const configureYargs = () => {
-    return yargs
-        .commandDir('../commands')
-        .demandCommand()
-        .help()
-        .version()
-        .argv._;
+  return yargs
+    .commandDir('../commands')
+    .demandCommand()
+    .help()
+    .version()
+    .argv._;
 };
 
 configureYargs();

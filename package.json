@@ -7,7 +7,8 @@
   },
   "scripts": {
     "demo": "node bin/index.js server --markdown test/demo.md --watch --log-level 0",
-    "release": "standard-version && git push --follow-tags && npm publish --access=public"
+    "release": "standard-version && git push --follow-tags && npm publish --access=public",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -34,12 +35,21 @@
     "koa": "^2.2.0",
     "log-util": "^1.2.0",
     "react-dev-utils": "^3.0.0",
-    "reveal.js": "^3.5.0",
+    "reveal.js": "^3.7.0",
     "socket.io": "^2.0.1",
     "update-notifier": "^2.1.0",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
+    "husky": "^1.1.1",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
     "standard-version": "^4.0.0"
+  },
+  "lint-staged": {
+    "**/**.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
