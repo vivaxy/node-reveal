@@ -43,9 +43,8 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 
 Update `package.json`
 
-```js
+```json
 {
-  // ...
   "scripts": {
     "start": "reveal server --markdown ./ppt/reveal.md"
   }
@@ -78,7 +77,7 @@ Update `package.json`
 ##### Basic Usage
 
 ```sh
-reveal start \
+reveal server \
     --markdown ./ppt/reveal.md \
     --theme solarized \
     --highlight-theme solarized-light \
@@ -93,7 +92,7 @@ reveal start \
 
 ##### Options
 
-| name                      | type          | isRequired    | default               | description |
+| Name                      | Type          | Required      | Default               | Description |
 | ---                       | ---           | ---           | ---                   | ---   |
 | `--markdown`              | string        | ✔             | N/A                   | markdown file |
 | `--theme`                 | string        | ✖             | `solarized`           | [`reveal.js` theme](https://github.com/hakimel/reveal.js#theming) |
@@ -112,9 +111,11 @@ reveal start \
 
 Used to print as pdf files.
 
-Add `?print-pdf&showNotes=true`, like: `http://127.0.0.1:3000/?print-pdf&showNotes=true#/`.
+Add `?print-pdf&showNotes=true`, like: `http://127.0.0.1:3000/?print-pdf#/`.
 
 Press `Ctrl/Command + p` to open print dialog.
+
+Usually, `print-pdf` is used with `showNotes`, like `http://127.0.0.1:3000/?print-pdf&showNotes=separate-page#/`
 
 #### `showNotes`
 
