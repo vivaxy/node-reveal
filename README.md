@@ -33,27 +33,9 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 
 ## Basic Usage
 
-### Installation
+### Npx
 
-`yarn add @vivaxy/reveal`
-
-`npm install @vivaxy/reveal`
-
-### Configuration
-
-Update `package.json`
-
-```json
-{
-  "scripts": {
-    "start": "reveal server --markdown ./ppt/reveal.md"
-  }
-}
-```
-
-### Start server
-
-`> npm start`
+`npx @vivaxy/reveal server --markdown /path/to/presentation.md`
 
 ### Keyboard Shortcuts
 
