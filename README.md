@@ -72,6 +72,7 @@ reveal server \
     --width 1440
     --height 900
     --log-level 2
+    --script 'custom.js'
 ```
 
 ##### Options
@@ -90,6 +91,7 @@ reveal server \
 | `--width`                 | number        | ✖             | 1440                  | slide width |
 | `--height`                | number        | ✖             | 900                   | slide height |
 | `--log-level`             | number/string | ✖             | `2`                   | [log output level](https://github.com/vivaxy/log-util#log-level)  |
+| `--script`                | string        | ✖             | ``                    | insert custom script before head  |
 
 ### URL Parameters
 

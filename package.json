@@ -6,7 +6,7 @@
     "reveal": "./bin/index.js"
   },
   "scripts": {
-    "demo": "node bin/index.js server --markdown test/demo.md --watch --log-level 0",
+    "demo": "node bin/index.js server --markdown test/demo.md --watch --log-level 0 --script custom.js",
     "release": "standard-version && git push --follow-tags && npm publish --access=public",
     "pre-commit": "lint-staged"
   },

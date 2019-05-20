@@ -51,6 +51,7 @@ const renderIndexHtml = async ({
   separatorNotes,
   width,
   height,
+  script,
 }) => {
   const template = await readTextFile(templatePath);
   const render = ejs.compile(template);
@@ -64,6 +65,7 @@ const renderIndexHtml = async ({
     separatorNotes,
     width,
     height,
+    script,
   });
 };
 
@@ -77,6 +79,7 @@ const responseIndex = async ({
   separatorNotes,
   width,
   height,
+  script,
 }) => {
   return {
     body: await renderIndexHtml({
@@ -89,6 +92,7 @@ const responseIndex = async ({
       separatorNotes,
       width,
       height,
+      script,
     }),
   };
 };
@@ -104,6 +108,7 @@ const createKoaSpecificPathMiddleware = ({
   separatorNotes,
   width,
   height,
+  script,
 }) => {
   const responses = {
     '/': responseIndex,
@@ -130,6 +135,7 @@ const createKoaSpecificPathMiddleware = ({
         separatorNotes,
         width,
         height,
+        script,
       });
       ctx.response.body = body;
       ctx.response.type = getResponseType(path);
@@ -192,6 +198,7 @@ const createServer = ({
   separatorNotes,
   width,
   height,
+  script,
 }) => {
   const server = new Koa();
 
@@ -207,6 +214,7 @@ const createServer = ({
       separatorNotes,
       width,
       height,
+      script,
     })
   );
   server.use(createKoaBeginningPathMiddleware({ markdown }));
@@ -251,6 +259,7 @@ const startServer = ({
   separatorNotes,
   width,
   height,
+  script,
 }) => {
   const server = createServer({
     markdown,
@@ -264,6 +273,7 @@ const startServer = ({
     separatorNotes,
     width,
     height,
+    script,
   });
   createSocket(server, { markdown });
   if (watch) {
@@ -290,7 +300,7 @@ const getValidThemes = async (matching, ext) => {
 };
 
 const argsFormats = {
-  markdown: async (input) => {
+  async markdown(input) {
     const markdownExists = await fse.pathExists(input);
     if (!markdownExists) {
       log.error('[server]', 'Invalid markdown file');
@@ -298,7 +308,7 @@ const argsFormats = {
     }
     return input;
   },
-  theme: async (input) => {
+  async theme(input) {
     const validThemes = await getValidThemes(
       nodePath.join(revealJsRoot, 'css', 'theme', '*.css'),
       '.css'
@@ -309,7 +319,7 @@ const argsFormats = {
     }
     return input;
   },
-  highlightTheme: async (input) => {
+  async highlightTheme(input) {
     const validHighlightTheme = await getValidThemes(
       nodePath.join(highlightJsRoot, 'styles', '*.css'),
       '.css'
@@ -325,7 +335,7 @@ const argsFormats = {
     }
     return input;
   },
-  transition: async (input) => {
+  async transition(input) {
     const validTransitions = [
       'none',
       'fade',
@@ -344,7 +354,7 @@ const argsFormats = {
     }
     return input;
   },
-  port: async (input) => {
+  async port(input) {
     if (!input) {
       return await getPort();
     }
@@ -430,6 +440,10 @@ exports.builder = {
     default: 2,
     describe: 'log level',
   },
+  script: {
+    default: '',
+    describe: 'insert custom script to head',
+  },
 };
 exports.handler = async (args) => {
   const {
@@ -445,6 +459,7 @@ exports.handler = async (args) => {
     width,
     height,
     logLevel,
+    script,
   } = await parseArgs(args);
 
   log.setLevel(logLevel);
@@ -461,5 +476,6 @@ exports.handler = async (args) => {
     separatorNotes,
     width,
     height,
+    script,
   });
 };
