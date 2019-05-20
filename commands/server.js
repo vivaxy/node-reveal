@@ -19,13 +19,21 @@ const openBrowser = require('react-dev-utils/openBrowser');
 const projectRoot = process.cwd();
 const nodeRevealRoot = nodePath.join(__dirname, '..');
 const revealJsRoot = nodePath.join(require.resolve('reveal.js'), '..', '..');
-const highlightJsRoot = nodePath.join(require.resolve('highlight.js'), '..', '..');
-const socketIoClientRoot = nodePath.join(require.resolve('socket.io-client'), '..', '..');
+const highlightJsRoot = nodePath.join(
+  require.resolve('highlight.js'),
+  '..',
+  '..'
+);
+const socketIoClientRoot = nodePath.join(
+  require.resolve('socket.io-client'),
+  '..',
+  '..'
+);
 const templatePath = nodePath.join(nodeRevealRoot, './template/index.ejs');
 
 const socketSet = new Set();
 
-const readTextFile = async(filePath) => {
+const readTextFile = async (filePath) => {
   return await fse.readFile(filePath, 'utf8');
 };
 
@@ -33,13 +41,43 @@ const getResponseType = (filename) => {
   return nodePath.extname(filename);
 };
 
-const renderIndexHtml = async({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
+const renderIndexHtml = async ({
+  theme,
+  highlightTheme,
+  transition,
+  watch,
+  separator,
+  separatorVertical,
+  separatorNotes,
+  width,
+  height,
+}) => {
   const template = await readTextFile(templatePath);
   const render = ejs.compile(template);
-  return render({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes });
+  return render({
+    theme,
+    highlightTheme,
+    transition,
+    watch,
+    separator,
+    separatorVertical,
+    separatorNotes,
+    width,
+    height,
+  });
 };
 
-const responseIndex = async({ theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
+const responseIndex = async ({
+  theme,
+  highlightTheme,
+  transition,
+  watch,
+  separator,
+  separatorVertical,
+  separatorNotes,
+  width,
+  height,
+}) => {
   return {
     body: await renderIndexHtml({
       theme,
@@ -49,22 +87,35 @@ const responseIndex = async({ theme, highlightTheme, transition, watch, separato
       separator,
       separatorVertical,
       separatorNotes,
+      width,
+      height,
     }),
   };
 };
 
-const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, transition, watch, separator, separatorVertical, separatorNotes }) => {
+const createKoaSpecificPathMiddleware = ({
+  markdown,
+  theme,
+  highlightTheme,
+  transition,
+  watch,
+  separator,
+  separatorVertical,
+  separatorNotes,
+  width,
+  height,
+}) => {
   const responses = {
     '/': responseIndex,
     '/index.html': responseIndex,
-    '/node-reveal/reveal.md': async({ markdown }) => {
+    '/node-reveal/reveal.md': async ({ markdown }) => {
       return {
         body: await readTextFile(markdown),
       };
     },
   };
 
-  return async(ctx, next) => {
+  return async (ctx, next) => {
     const { path } = ctx.request;
     const getResponse = responses[path];
     if (getResponse) {
@@ -77,6 +128,8 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
         separator,
         separatorVertical,
         separatorNotes,
+        width,
+        height,
       });
       ctx.response.body = body;
       ctx.response.type = getResponseType(path);
@@ -87,33 +140,37 @@ const createKoaSpecificPathMiddleware = ({ markdown, theme, highlightTheme, tran
 };
 
 const createKoaBeginningPathMiddleware = ({ markdown }) => {
-  const send = async(ctx, relativePath, root) => {
-    ctx.response.body = await fse.readFile((nodePath.join(root, relativePath)));
+  const send = async (ctx, relativePath, root) => {
+    ctx.response.body = await fse.readFile(nodePath.join(root, relativePath));
     ctx.response.type = getResponseType(relativePath);
   };
 
   const responsesForBeginningPath = {
-    '/node-reveal': async(ctx, path) => {
+    '/node-reveal': async (ctx, path) => {
       await send(ctx, path, nodeRevealRoot);
     },
-    '/reveal.js': async(ctx, path) => {
+    '/reveal.js': async (ctx, path) => {
       await send(ctx, path, revealJsRoot);
     },
-    '/highlight.js': async(ctx, path) => {
+    '/highlight.js': async (ctx, path) => {
       await send(ctx, path, highlightJsRoot);
     },
-    '/socket.io-client': async(ctx, path) => {
+    '/socket.io-client': async (ctx, path) => {
       await send(ctx, path, socketIoClientRoot);
     },
   };
 
-  const markdownRelativePath = nodePath.relative(projectRoot, nodePath.dirname(markdown));
+  const markdownRelativePath = nodePath.relative(
+    projectRoot,
+    nodePath.dirname(markdown)
+  );
 
-  return async(ctx) => {
+  return async (ctx) => {
     const { path } = ctx.request;
 
     const [_1, beginningPath, ...restPath] = path.split('/');
-    const getResponseForBeginningPath = responsesForBeginningPath[`/${beginningPath}`];
+    const getResponseForBeginningPath =
+      responsesForBeginningPath[`/${beginningPath}`];
     if (getResponseForBeginningPath) {
       await getResponseForBeginningPath(ctx, `/${restPath.join('/')}`);
     } else {
@@ -123,19 +180,35 @@ const createKoaBeginningPathMiddleware = ({ markdown }) => {
   };
 };
 
-const createServer = ({ markdown, theme, highlightTheme, transition, port, watch, separator, separatorVertical, separatorNotes }) => {
+const createServer = ({
+  markdown,
+  theme,
+  highlightTheme,
+  transition,
+  port,
+  watch,
+  separator,
+  separatorVertical,
+  separatorNotes,
+  width,
+  height,
+}) => {
   const server = new Koa();
 
-  server.use(createKoaSpecificPathMiddleware({
-    markdown,
-    theme,
-    highlightTheme,
-    transition,
-    watch,
-    separator,
-    separatorVertical,
-    separatorNotes,
-  }));
+  server.use(
+    createKoaSpecificPathMiddleware({
+      markdown,
+      theme,
+      highlightTheme,
+      transition,
+      watch,
+      separator,
+      separatorVertical,
+      separatorNotes,
+      width,
+      height,
+    })
+  );
   server.use(createKoaBeginningPathMiddleware({ markdown }));
   const nativeServer = server.listen(port);
   log.info('[server]', 'started on', port);
@@ -166,7 +239,19 @@ const startWatch = ({ markdown }) => {
   });
 };
 
-const startServer = ({ markdown, theme, highlightTheme, transition, port, watch, separator, separatorVertical, separatorNotes }) => {
+const startServer = ({
+  markdown,
+  theme,
+  highlightTheme,
+  transition,
+  port,
+  watch,
+  separator,
+  separatorVertical,
+  separatorNotes,
+  width,
+  height,
+}) => {
   const server = createServer({
     markdown,
     theme,
@@ -177,6 +262,8 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
     separator,
     separatorVertical,
     separatorNotes,
+    width,
+    height,
   });
   createSocket(server, { markdown });
   if (watch) {
@@ -195,7 +282,7 @@ const startServer = ({ markdown, theme, highlightTheme, transition, port, watch,
   process.stdin.on('data', openBrowserFunc);
 };
 
-const getValidThemes = async(matching, ext) => {
+const getValidThemes = async (matching, ext) => {
   const files = await glob(matching);
   return files.map((file) => {
     return nodePath.basename(file, ext);
@@ -203,7 +290,7 @@ const getValidThemes = async(matching, ext) => {
 };
 
 const argsFormats = {
-  markdown: async(input) => {
+  markdown: async (input) => {
     const markdownExists = await fse.pathExists(input);
     if (!markdownExists) {
       log.error('[server]', 'Invalid markdown file');
@@ -211,31 +298,53 @@ const argsFormats = {
     }
     return input;
   },
-  theme: async(input) => {
-    const validThemes = await getValidThemes(nodePath.join(revealJsRoot, 'css', 'theme', '*.css'), '.css');
+  theme: async (input) => {
+    const validThemes = await getValidThemes(
+      nodePath.join(revealJsRoot, 'css', 'theme', '*.css'),
+      '.css'
+    );
     if (!validThemes.includes(input)) {
       log.error('[server]', 'Invalid theme.', 'Use:', validThemes.join('/'));
       process.exit(1);
     }
     return input;
   },
-  highlightTheme: async(input) => {
-    const validHighlightTheme = await getValidThemes(nodePath.join(highlightJsRoot, 'styles', '*.css'), '.css');
+  highlightTheme: async (input) => {
+    const validHighlightTheme = await getValidThemes(
+      nodePath.join(highlightJsRoot, 'styles', '*.css'),
+      '.css'
+    );
     if (!validHighlightTheme.includes(input)) {
-      log.error('[server]', 'Invalid highlight theme.', 'Use:', validHighlightTheme.join('/'));
+      log.error(
+        '[server]',
+        'Invalid highlight theme.',
+        'Use:',
+        validHighlightTheme.join('/')
+      );
       process.exit(1);
     }
     return input;
   },
-  transition: async(input) => {
-    const validTransitions = ['none', 'fade', 'slide', 'convex', 'concave', 'zoom'];
+  transition: async (input) => {
+    const validTransitions = [
+      'none',
+      'fade',
+      'slide',
+      'convex',
+      'concave',
+      'zoom',
+    ];
     if (!validTransitions.includes(input)) {
-      log.error('[server]', 'Invalid transition.' + 'Use:', validTransitions.join('/'));
+      log.error(
+        '[server]',
+        'Invalid transition.' + 'Use:',
+        validTransitions.join('/')
+      );
       process.exit(1);
     }
     return input;
   },
-  port: async(input) => {
+  port: async (input) => {
     if (!input) {
       return await getPort();
     }
@@ -243,9 +352,9 @@ const argsFormats = {
   },
 };
 
-const parseArgs = async(args) => {
+const parseArgs = async (args) => {
   const formattedArgs = {};
-  const formatArgument = async(key) => {
+  const formatArgument = async (key) => {
     const format = argsFormats[key];
     const value = args[key];
     if (format) {
@@ -253,8 +362,8 @@ const parseArgs = async(args) => {
     }
     return value;
   };
-  const formatJobs = Object.keys(args).map(async(key) => {
-    return formattedArgs[key] = await formatArgument(key);
+  const formatJobs = Object.keys(args).map(async (key) => {
+    return (formattedArgs[key] = await formatArgument(key));
   });
   await Promise.all(formatJobs);
   return formattedArgs;
@@ -307,12 +416,22 @@ exports.builder = {
     describe: 'speaker notes separator',
     type: 'string',
   },
+  width: {
+    default: 1440,
+    describe: 'slide width',
+    type: 'number',
+  },
+  height: {
+    default: 900,
+    describe: 'slide height',
+    type: 'number',
+  },
   logLevel: {
     default: 2,
     describe: 'log level',
   },
 };
-exports.handler = async(args) => {
+exports.handler = async (args) => {
   const {
     markdown,
     theme,
@@ -323,6 +442,8 @@ exports.handler = async(args) => {
     separator,
     separatorVertical,
     separatorNotes,
+    width,
+    height,
     logLevel,
   } = await parseArgs(args);
 
@@ -338,5 +459,7 @@ exports.handler = async(args) => {
     separator,
     separatorVertical,
     separatorNotes,
+    width,
+    height,
   });
 };

@@ -69,6 +69,8 @@ reveal server \
     --separator '^\r?\n----\r?\n$' \
     --separator-vertical '^\r?\n---\r?\n$' \
     --separator-notes '^Note:'
+    --width 1440
+    --height 900
     --log-level 2
 ```
 
@@ -80,11 +82,13 @@ reveal server \
 | `--theme`                 | string        | ✖             | `solarized`           | [`reveal.js` theme](https://github.com/hakimel/reveal.js#theming) |
 | `--highlight-theme`       | string        | ✖             | `solarized-light`     | [`highlight.js` theme](https://highlightjs.org/static/demo/) |
 | `--transition`            | string        | ✖             | `slide`               | [`reveal.js` slide type](https://github.com/hakimel/reveal.js#configuration)  |
-| `--port`                  | number        | ✖             | a valid port          | server port |
+| `--port`                  | number        | ✖             | a random valid port   | server port |
 | `--watch`                 | boolean       | ✖             | `false`               | reload when markdown changed  |
 | `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator |
 | `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator |
 | `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator |
+| `--width`                 | number        | ✖             | 1440                  | slide width |
+| `--height`                | number        | ✖             | 900                   | slide height |
 | `--log-level`             | number/string | ✖             | `2`                   | [log output level](https://github.com/vivaxy/log-util#log-level)  |
 
 ### URL Parameters
