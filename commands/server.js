@@ -403,6 +403,7 @@ exports.builder = {
     describe: 'reveal.js transition',
   },
   port: {
+    default: 0,
     describe: 'server port',
     type: 'number',
   },

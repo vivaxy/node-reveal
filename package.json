@@ -7,8 +7,7 @@
   },
   "scripts": {
     "demo": "node bin/index.js server --markdown test/demo.md --watch --log-level 0 --script custom.js",
-    "release": "standard-version && git push --follow-tags && npm publish --access=public",
-    "pre-commit": "lint-staged"
+    "release": "standard-version && git push --follow-tags && npm publish --access=public"
   },
   "repository": {
     "type": "git",
@@ -24,27 +23,32 @@
   },
   "homepage": "https://github.com/vivaxy/node-reveal#readme",
   "dependencies": {
-    "chokidar": "^1.7.0",
+    "chokidar": "^3.0.0",
     "ejs": "^2.5.6",
-    "fs-extra": "^3.0.1",
-    "get-port": "^3.1.0",
-    "glob": "^7.1.2",
+    "fs-extra": "^8.0.1",
+    "get-port": "^5.0.0",
+    "glob": "^7.1.4",
     "glob-promise": "^3.1.0",
     "highlight.js": "^9.12.0",
     "ip": "^1.1.5",
-    "koa": "^2.2.0",
+    "koa": "^2.7.0",
     "log-util": "^1.2.0",
-    "react-dev-utils": "^3.0.0",
+    "react-dev-utils": "^9.0.1",
     "reveal.js": "^3.7.0",
-    "socket.io": "^2.0.1",
-    "update-notifier": "^2.1.0",
-    "yargs": "^8.0.1"
+    "socket.io": "^2.2.0",
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "husky": "^1.1.1",
-    "lint-staged": "^7.3.0",
-    "prettier": "^1.14.3",
-    "standard-version": "^4.0.0"
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.17.1",
+    "standard-version": "^6.0.1",
+    "update-notifier": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "**/**.{js,json,md}": [

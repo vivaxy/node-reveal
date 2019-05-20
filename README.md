@@ -21,6 +21,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 - Speaker view.
 - Theme config.
 - Inline html.
+- Support Node.js >= v8.
 
 ## Notable Markdown Syntax
 
@@ -77,21 +78,21 @@ reveal server \
 
 ##### Options
 
-| Name                      | Type          | Required      | Default               | Description |
-| ---                       | ---           | ---           | ---                   | ---   |
-| `--markdown`              | string        | ✔             | N/A                   | markdown file |
-| `--theme`                 | string        | ✖             | `solarized`           | [`reveal.js` theme](https://github.com/hakimel/reveal.js#theming) |
-| `--highlight-theme`       | string        | ✖             | `solarized-light`     | [`highlight.js` theme](https://highlightjs.org/static/demo/) |
-| `--transition`            | string        | ✖             | `slide`               | [`reveal.js` slide type](https://github.com/hakimel/reveal.js#configuration)  |
-| `--port`                  | number        | ✖             | a random valid port   | server port |
-| `--watch`                 | boolean       | ✖             | `false`               | reload when markdown changed  |
-| `--separator`             | string        | ✖             | `^\r?\n----\r?\n$`    | horizontal slides separator |
-| `--separator-vertical`    | string        | ✖             | `^\r?\n---\r?\n$`     | vertical slides separator |
-| `--separator-notes`       | string        | ✖             | `^Note:`              | speaker notes separator |
-| `--width`                 | number        | ✖             | 1440                  | slide width |
-| `--height`                | number        | ✖             | 900                   | slide height |
-| `--log-level`             | number/string | ✖             | `2`                   | [log output level](https://github.com/vivaxy/log-util#log-level)  |
-| `--script`                | string        | ✖             | ``                    | insert custom script before head  |
+| Name                   | Type          | Required | Default                               | Description                                                                  |
+| ---------------------- | ------------- | -------- | ------------------------------------- | ---------------------------------------------------------------------------- |
+| `--markdown`           | string        | ✔        | N/A                                   | markdown file                                                                |
+| `--theme`              | string        | ✖        | `solarized`                           | [`reveal.js` theme](https://github.com/hakimel/reveal.js#theming)            |
+| `--highlight-theme`    | string        | ✖        | `solarized-light`                     | [`highlight.js` theme](https://highlightjs.org/static/demo/)                 |
+| `--transition`         | string        | ✖        | `slide`                               | [`reveal.js` slide type](https://github.com/hakimel/reveal.js#configuration) |
+| `--port`               | number        | ✖        | `0`                                   | server port                                                                  |
+| `--watch`              | boolean       | ✖        | `false`                               | reload when markdown changed                                                 |
+| `--separator`          | string        | ✖        | `^\r?\n----\r?\n$`                    | horizontal slides separator                                                  |
+| `--separator-vertical` | string        | ✖        | `^\r?\n---\r?\n$`                     | vertical slides separator                                                    |
+| `--separator-notes`    | string        | ✖        | `^Note:`                              | speaker notes separator                                                      |
+| `--width`              | number        | ✖        | 1440                                  | slide width                                                                  |
+| `--height`             | number        | ✖        | 900                                   | slide height                                                                 |
+| `--log-level`          | number/string | ✖        | `2`                                   | [log output level](https://github.com/vivaxy/log-util#log-level)             |
+| `--script`             | string        | ✖        | `` | insert custom script before head |
 
 ### URL Parameters
 
