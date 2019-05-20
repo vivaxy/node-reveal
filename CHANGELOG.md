@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/vivaxy/node-reveal/compare/v1.4.3...v1.5.0) (2019-05-20)
+
+
+### Features
+
+* **style:** :sparkles:Fix slide style, by default to 1440*900. Centering items by flex. ([0027578](https://github.com/vivaxy/node-reveal/commit/0027578))
+
+
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://github.com/vivaxy/node-reveal/compare/v1.4.2...v1.4.3) (2019-05-07)
 
