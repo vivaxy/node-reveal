@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/vivaxy/node-reveal/compare/v2.1.0...v2.1.1) (2019-05-20)
+
+
+### Bug Fixes
+
+* :bug:Fix multi devices slide dead lock. ([5833d4f](https://github.com/vivaxy/node-reveal/commit/5833d4f))
+
+
+
 ## [2.1.0](https://github.com/vivaxy/node-reveal/compare/v2.0.1...v2.1.0) (2019-05-20)
 
 
