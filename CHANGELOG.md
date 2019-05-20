@@ -1,6 +1,20 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.0.0](https://github.com/vivaxy/node-reveal/compare/v1.7.0...v2.0.0) (2019-05-20)
+
+
+### Features
+
+* :arrow_up: ([75114b6](https://github.com/vivaxy/node-reveal/commit/75114b6))
+
+
+### BREAKING CHANGES
+
+* Drop support for node.js <= v8
+
+
 
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/vivaxy/node-reveal/compare/v1.6.0...v1.7.0) (2019-05-20)
