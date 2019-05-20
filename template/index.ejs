@@ -1,114 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>reveal</title>
-  <link rel="stylesheet" href="/reveal.js/css/reset.css">
-  <link rel="stylesheet" href="/reveal.js/css/reveal.css">
-  <link rel="stylesheet" href="/reveal.js/css/theme/<%= theme %>.css">
-  <link rel="stylesheet" href="/highlight.js/styles/<%= highlightTheme %>.css">
-  <link type="image/png" rel="shortcut icon" href="/node-reveal/assets/icons/node-reveal.jpg">
-  <script>
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = window.location.search.match(/print-pdf/gi) ? '/reveal.js/css/print/pdf.css' : '/reveal.js/css/print/paper.css';
-    document.getElementsByTagName('head')[0].appendChild(link);
-  </script>
-  <style>
-    .slides .stack section {
-      height: 100% !important;
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      top: 0 !important;
-    }
-  </style>
-  <% if (script) { %>
-    <script src="<%= script %>"></script>
-  <% } %>
-</head>
-<body>
-<div class="reveal">
-  <div class="slides">
-    <section
-      data-markdown="/node-reveal/reveal.md"
-      data-separator="<%= separator %>"
-      data-separator-vertical="<%= separatorVertical %>"
-      data-separator-notes="<%= separatorNotes %>"
-    >
-    </section>
-  </div>
-</div>
-<script src="/reveal.js/js/reveal.js"></script>
-<script>
-  Reveal.initialize({
-    width: Number('<%= width %>'),
-    height: Number('<%= height %>'),
-    margin: 0,
-    pdfMaxPagesPerSlide: 1,
-
-    controls: true,
-    progress: true,
-    history: true,
-    center: true,
-
-    transition: '<%= transition %>',
-
-    // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-    // parallaxBackgroundSize: '2100px 900px',
-
-    dependencies: [
-      {
-        src: '/reveal.js/plugin/markdown/marked.js'
-      },
-      {
-        src: '/reveal.js/plugin/markdown/markdown.js'
-      },
-      {
-        src: '/reveal.js/plugin/notes/notes.js',
-        async: true
-      },
-      {
-        src: '/reveal.js/plugin/zoom-js/zoom.js',
-        async: true
-      },
-      {
-        src: '/reveal.js/plugin/highlight/highlight.js',
-        async: true,
-        callback: function() {
-          hljs.initHighlightingOnLoad();
-        }
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>reveal</title>
+    <link rel="stylesheet" href="/reveal.js/css/reset.css" />
+    <link rel="stylesheet" href="/reveal.js/css/reveal.css" />
+    <link rel="stylesheet" href="/reveal.js/css/theme/<%= theme %>.css" />
+    <link
+      rel="stylesheet"
+      href="/highlight.js/styles/<%= highlightTheme %>.css"
+    />
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="/node-reveal/assets/icons/node-reveal.jpg"
+    />
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? '/reveal.js/css/print/pdf.css'
+        : '/reveal.js/css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <style>
+      .slides .stack section {
+        height: 100% !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        top: 0 !important;
       }
-    ]
-  });
-</script>
-<script type="text/javascript" src="/socket.io-client/dist/socket.io.js"></script>
-<script>
-  var socket = io.connect(location.host);
-  socket.on('connected', function(data) {
-    // console.log('[reveal]', 'connected');
-    document.title = data.title;
-  });
-  socket.on('disconnected', function() {
-    // console.log('[reveal]', 'disconnected');
-  });
-  socket.on('reload', function() {
-    location.reload();
-  });
-</script>
-<script>
-// support sync slide change
-Reveal.addEventListener('slidechanged', function(event) {
-  // event.previousSlide, event.currentSlide, event.indexh, event.indexv
-  socket.emit('slidechanged', event);
-});
-socket.on('slidechanged', function(event) {
-  // Reveal.slide( indexh, indexv, indexf );
-  Reveal.slide(event.indexh, event.indexv );
-});
-</script>
-</body>
+    </style>
+    <% if (script) { %>
+    <script src="<%= script %>"></script>
+    <% } %>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-markdown="/node-reveal/reveal.md"
+          data-separator="<%= separator %>"
+          data-separator-vertical="<%= separatorVertical %>"
+          data-separator-notes="<%= separatorNotes %>"
+        ></section>
+      </div>
+    </div>
+    <script src="/reveal.js/js/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        width: Number('<%= width %>'),
+        height: Number('<%= height %>'),
+        margin: 0,
+        pdfMaxPagesPerSlide: 1,
+
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: '<%= transition %>',
+
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        dependencies: [
+          {
+            src: '/reveal.js/plugin/markdown/marked.js',
+          },
+          {
+            src: '/reveal.js/plugin/markdown/markdown.js',
+          },
+          {
+            src: '/reveal.js/plugin/notes/notes.js',
+            async: true,
+          },
+          {
+            src: '/reveal.js/plugin/zoom-js/zoom.js',
+            async: true,
+          },
+          {
+            src: '/reveal.js/plugin/highlight/highlight.js',
+            async: true,
+            callback: function() {
+              hljs.initHighlightingOnLoad();
+            },
+          },
+        ],
+      });
+    </script>
+    <script
+      type="text/javascript"
+      src="/socket.io-client/dist/socket.io.js"
+    ></script>
+    <script>
+      var socket = io.connect(location.host);
+      socket.on('connected', function(data) {
+        // console.log('[reveal]', 'connected');
+        document.title = data.title;
+      });
+      socket.on('disconnected', function() {
+        // console.log('[reveal]', 'disconnected');
+      });
+      socket.on('reload', function() {
+        location.reload();
+      });
+    </script>
+    <script>
+      // support sync slide change
+      let indexh, indexv;
+      Reveal.addEventListener('slidechanged', function(event) {
+        // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+        if (event.indexh !== indexh || event.indexv !== indexv) {
+          socket.emit('slidechanged', event);
+        }
+      });
+      socket.on('slidechanged', function(event) {
+        // Reveal.slide( indexh, indexv, indexf );
+        indexh = event.indexh;
+        indexv = event.indexv;
+        Reveal.slide(indexh, indexv);
+      });
+    </script>
+  </body>
 </html>
