@@ -24,6 +24,12 @@ let val;
 ({ val } = object);
 ```
 
+```js
+function App({ title, style }) {
+  return <h1 className="app" style={style}>{title}</h1>
+}
+```
+
 ----
 
 - List1
