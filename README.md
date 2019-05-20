@@ -17,6 +17,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 
 - Easy to setup. No cloning repositories. No template files.
 - Markdown files as slides content.
+- Sync sliding between clients.
 - Auto reload when markdown file changes.
 - Speaker view.
 - Theme config.

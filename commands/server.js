@@ -232,6 +232,7 @@ const createSocket = (server, { markdown }) => {
       socketSet.delete(socket);
       log.debug('[server]', 'user disconnected', socketSet.size);
     });
+    socket.on('slidechanged', syncPageSliding);
     socketSet.add(socket);
     socket.emit('connected', { title: markdownFilename });
     log.debug('[server]', 'user connected', socketSet.size);
@@ -241,9 +242,20 @@ const createSocket = (server, { markdown }) => {
 const startWatch = ({ markdown }) => {
   const watcher = chokidar.watch(markdown);
   watcher.on('change', () => {
+    log.debug(
+      '[server]',
+      'markdown file changed, sending to ' + socketSet.size + ' clients'
+    );
     socketSet.forEach((socket) => {
       socket.emit('reload');
     });
+  });
+};
+
+const syncPageSliding = (event) => {
+  log.debug('[server]', 'slide changed ' + JSON.stringify(event));
+  socketSet.forEach((socket) => {
+    socket.emit('slidechanged', event);
   });
 };
 

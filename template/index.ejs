@@ -99,5 +99,16 @@
     location.reload();
   });
 </script>
+<script>
+// support sync slide change
+Reveal.addEventListener('slidechanged', function(event) {
+  // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+  socket.emit('slidechanged', event);
+});
+socket.on('slidechanged', function(event) {
+  // Reveal.slide( indexh, indexv, indexf );
+  Reveal.slide(event.indexh, event.indexv );
+});
+</script>
 </body>
 </html>
