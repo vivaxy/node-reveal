@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/vivaxy/node-reveal/compare/v1.5.0...v1.6.0) (2019-05-20)
+
+
+### Features
+
+* **pdf-print:** :sparkles:Restrict pdf printing to per-slide per-page ([66b99cb](https://github.com/vivaxy/node-reveal/commit/66b99cb))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/vivaxy/node-reveal/compare/v1.4.3...v1.5.0) (2019-05-20)
 
