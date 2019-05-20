@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/vivaxy/node-reveal/compare/v1.6.0...v1.7.0) (2019-05-20)
+
+
+### Features
+
+* **args:** :sparkles:Support add custom script by --script ([2811e43](https://github.com/vivaxy/node-reveal/commit/2811e43))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/vivaxy/node-reveal/compare/v1.5.0...v1.6.0) (2019-05-20)
 
