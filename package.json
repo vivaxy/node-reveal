@@ -6,7 +6,7 @@
     "reveal": "./bin/index.js"
   },
   "scripts": {
-    "demo": "node now/index.js",
+    "demo": "node test/demo.js",
     "release": "standard-version && git push --follow-tags && npm publish --access=public"
   },
   "repository": {
