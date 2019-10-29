@@ -1,6 +1,6 @@
-# node-reveal
+# @vivaxy/reveal
 
-![node-reveal](assets/icons/node-reveal.jpg)
+![@vivaxy/reveal](assets/icons/node-reveal.jpg)
 
 🎁 A reveal.js cli
 
@@ -35,7 +35,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 
 ## Basic Usage
 
-### Npx
+### npx
 
 `npx @vivaxy/reveal server --markdown /path/to/presentation.md`
 
@@ -49,7 +49,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 - `o`: Toggle overview
 - `.` (`Period`, `b`, `v` or `/`): Turn screen black
 - `Esc`: Escape from full-screen, or toggle overview
-- `alt + left click`: Toggle zoom
+- `alt + Left Click`: Toggle zoom
 - `p`, `n`: Previous and next
 
 ## Advanced Usage
@@ -70,10 +70,10 @@ reveal server \
     --watch \
     --separator '^\r?\n----\r?\n$' \
     --separator-vertical '^\r?\n---\r?\n$' \
-    --separator-notes '^Note:'
-    --width 1440
-    --height 900
-    --log-level 2
+    --separator-notes '^Note:' \
+    --width 1440 \
+    --height 900 \
+    --log-level 2 \
     --script 'custom.js'
 ```
 
@@ -93,7 +93,7 @@ reveal server \
 | `--width`              | number        | ✖        | 1440                                  | slide width                                                                  |
 | `--height`             | number        | ✖        | 900                                   | slide height                                                                 |
 | `--log-level`          | number/string | ✖        | `2`                                   | [log output level](https://github.com/vivaxy/log-util#log-level)             |
-| `--script`             | string        | ✖        | `` | insert custom script before head |
+| `--script`             | string        | ✖        | '' | insert custom script before head |
 
 ### URL Parameters
 
@@ -115,7 +115,7 @@ Add `?showNotes=true`, like: `http://127.0.0.1:3000/?showNotes=true#/`.
 
 ## Support
 
-node >= v7.10
+node >= v8.0
 
 ## Change Log
 
