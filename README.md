@@ -123,9 +123,10 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Prior Art
 
+- [ksky521/nodePPT](https://github.com/ksky521/nodePPT)
+- [hiroppy/fusuma](https://github.com/hiroppy/fusuma)
 - [hakimel/reveal.js](https://github.com/hakimel/reveal.js)
 - [webpro/reveal-md](https://github.com/webpro/reveal-md)
-- [ksky521/nodePPT](https://github.com/ksky521/nodePPT)
 - [int64ago/node-reveal](https://github.com/int64ago/node-reveal)
 
 [npm-version-image]: http://img.shields.io/npm/v/@vivaxy/reveal.svg?style=flat-square
