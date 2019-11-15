@@ -101,6 +101,9 @@
       src="/socket.io-client/dist/socket.io.js"
     ></script>
     <script>
+      if (window.location.search.match(/controls=false/gi)) {
+        return;
+      }
       var socket = io.connect(location.host);
       socket.on('connected', function(data) {
         // console.log('[reveal]', 'connected');
@@ -112,8 +115,7 @@
       socket.on('reload', function() {
         location.reload();
       });
-    </script>
-    <script>
+
       // support sync slide change
       let indexh, indexv;
       Reveal.addEventListener('slidechanged', function(event) {

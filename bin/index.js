@@ -3,7 +3,6 @@
  * @since 2017-05-31 19:32:36
  * @author vivaxy
  */
-
 const yargs = require('yargs');
 const updateNotifier = require('update-notifier');
 
@@ -14,8 +13,7 @@ const configureYargs = () => {
     .commandDir('../commands')
     .demandCommand()
     .help()
-    .version()
-    .argv._;
+    .version().argv._;
 };
 
 configureYargs();

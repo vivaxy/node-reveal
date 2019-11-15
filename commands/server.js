@@ -2,7 +2,6 @@
  * @since 2017-05-31 19:42:13
  * @author vivaxy
  */
-
 const nodePath = require('path');
 
 const ip = require('ip');
