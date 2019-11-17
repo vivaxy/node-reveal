@@ -101,35 +101,37 @@
       src="/socket.io-client/dist/socket.io.js"
     ></script>
     <script>
-      if (window.location.search.match(/controls=false/gi)) {
-        return;
-      }
-      var socket = io.connect(location.host);
-      socket.on('connected', function(data) {
-        // console.log('[reveal]', 'connected');
-        document.title = data.title;
-      });
-      socket.on('disconnected', function() {
-        // console.log('[reveal]', 'disconnected');
-      });
-      socket.on('reload', function() {
-        location.reload();
-      });
-
-      // support sync slide change
-      let indexh, indexv;
-      Reveal.addEventListener('slidechanged', function(event) {
-        // event.previousSlide, event.currentSlide, event.indexh, event.indexv
-        if (event.indexh !== indexh || event.indexv !== indexv) {
-          socket.emit('slidechanged', event);
+      (function() {
+        if (window.location.search.match(/controls=false/gi)) {
+          return;
         }
-      });
-      socket.on('slidechanged', function(event) {
-        // Reveal.slide( indexh, indexv, indexf );
-        indexh = event.indexh;
-        indexv = event.indexv;
-        Reveal.slide(indexh, indexv);
-      });
+        var socket = io.connect(location.host);
+        socket.on('connected', function(data) {
+          // console.log('[reveal]', 'connected');
+          document.title = data.title;
+        });
+        socket.on('disconnected', function() {
+          // console.log('[reveal]', 'disconnected');
+        });
+        socket.on('reload', function() {
+          location.reload();
+        });
+
+        // support sync slide change
+        let indexh, indexv;
+        Reveal.addEventListener('slidechanged', function(event) {
+          // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+          if (event.indexh !== indexh || event.indexv !== indexv) {
+            socket.emit('slidechanged', event);
+          }
+        });
+        socket.on('slidechanged', function(event) {
+          // Reveal.slide( indexh, indexv, indexf );
+          indexh = event.indexh;
+          indexv = event.indexv;
+          Reveal.slide(indexh, indexv);
+        });
+      }())
     </script>
   </body>
 </html>
