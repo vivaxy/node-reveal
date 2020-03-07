@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/vivaxy/node-reveal/compare/v2.1.5...v2.2.0) (2020-03-07)
+
+
+### Features
+
+* :arrow_up:  upgrade reveal.js@^3.9.2 ([dc68d0e](https://github.com/vivaxy/node-reveal/commit/dc68d0e))
+
+
+
 ### [2.1.5](https://github.com/vivaxy/node-reveal/compare/v2.1.4...v2.1.5) (2019-11-17)
 
 
