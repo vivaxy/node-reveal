@@ -1,11 +1,16 @@
 # h1
+
 ## h2
+
 ### h3
+
 #### h4
+
 ##### h5
+
 ###### h6
 
-paragraph
+Paragraph
 
 Note:
 
@@ -17,7 +22,7 @@ Syntax Highlight
 
 ```js
 const object = {
-    key: 'value',
+  key: 'value',
 };
 
 let val;
@@ -26,24 +31,52 @@ let val;
 
 ```js
 function App({ title, style }) {
-  return <h1 className="app" style={style}>{title}</h1>
+  return (
+    <h1 className="app" style={style}>
+      {title}
+    </h1>
+  );
 }
 ```
 
-----
+---
+
+## Line Numbers & Step-by-step Highlights
+
+<pre>
+<code class="hljs" data-line-numbers="1|3,6-14|4">import React, { useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+</code>
+</pre>
+
+---
+
+## Lists
 
 - List1
 - List2
-    - Item1
-    - Item2
+  - Item1
+  - Item2
 
-----
+---
 
-Slide Style
+Define Slide Style
 
-<!-- .slide: data-background="#ff0000" -->
+<!-- .slide: data-background="#ff9999" style="color: #ffffff;" -->
 
-----
+---
 
 Fragment
 
@@ -54,6 +87,6 @@ Fragment
 
 ![img](./parallax.jpg)
 
-----
+---
 
 End
