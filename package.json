@@ -24,7 +24,7 @@
   "homepage": "https://github.com/vivaxy/node-reveal#readme",
   "dependencies": {
     "chokidar": "^3.0.0",
-    "ejs": "^2.5.6",
+    "ejs": "^3.0.0",
     "fs-extra": "^8.0.1",
     "get-port": "^5.0.0",
     "glob": "^7.1.4",
