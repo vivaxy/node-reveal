@@ -33,7 +33,7 @@
     "ip": "^1.1.5",
     "koa": "^2.7.0",
     "log-util": "^2.0.0",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^10.0.0",
     "reveal.js": "^3.9.2",
     "socket.io": "^2.2.0",
     "update-notifier": "^3.0.0",
