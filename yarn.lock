@@ -3574,10 +3574,10 @@ ret@~0.1.10:
   resolved "https://registry.npmjs.org/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
-reveal.js@^3.9.2:
-  version "3.9.2"
-  resolved "https://registry.npmjs.org/reveal.js/-/reveal.js-3.9.2.tgz#7f63d3dfec338b6c313dcabdf006e8cf80e0b358"
-  integrity sha512-Dvv2oA9FrtOHE2DWj5js8pMRfwq++Wmvsn1EyAdYLC80lBjTphns+tPsB652Bnvep9AVviuVS/b4XoVY9rXHLA==
+reveal.js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/reveal.js/-/reveal.js-4.0.0.tgz#09d9ca76789e59b2e7230a60e5d25ff0136dfb05"
+  integrity sha512-OvsmH/INmEYzNiYK+xLV04D+ZGASv65exBNWQOmpe2ukkHrYfd9bmaGCyB7heHQIAwI9GyYzw3tbRzS4S6I5CA==
 
 run-async@^2.2.0:
   version "2.3.0"
