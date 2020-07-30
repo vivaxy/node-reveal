@@ -321,7 +321,7 @@ const argsFormats = {
   },
   async theme(input) {
     const validThemes = await getValidThemes(
-      nodePath.join(revealJsRoot, 'css', 'theme', '*.css'),
+      nodePath.join(revealJsRoot, 'dist', 'theme', '*.css'),
       '.css'
     );
     if (!validThemes.includes(input)) {

@@ -7,9 +7,9 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>reveal</title>
-    <link rel="stylesheet" href="/reveal.js/css/reset.css" />
-    <link rel="stylesheet" href="/reveal.js/css/reveal.css" />
-    <link rel="stylesheet" href="/reveal.js/css/theme/<%= theme %>.css" />
+    <link rel="stylesheet" href="/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="/reveal.js/dist/theme/<%= theme %>.css" />
     <link
       rel="stylesheet"
       href="/highlight.js/styles/<%= highlightTheme %>.css"
@@ -19,15 +19,6 @@
       rel="shortcut icon"
       href="/node-reveal/assets/icons/node-reveal.jpg"
     />
-    <script>
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = window.location.search.match(/print-pdf/gi)
-        ? '/reveal.js/css/print/pdf.css'
-        : '/reveal.js/css/print/paper.css';
-      document.getElementsByTagName('head')[0].appendChild(link);
-    </script>
     <style>
       .slides .stack section {
         height: 100% !important;
@@ -53,7 +44,12 @@
         ></section>
       </div>
     </div>
-    <script src="/reveal.js/js/reveal.js"></script>
+    <script src="/reveal.js/dist/reveal.js"></script>
+    <script src="/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="/reveal.js/plugin/math/math.js"></script>
+    <script src="/reveal.js/plugin/notes/notes.js"></script>
+    <script src="/reveal.js/plugin/zoom/zoom.js"></script>
+    <script src="/reveal.js/plugin/highlight/highlight.js"></script>
     <script>
       Reveal.initialize({
         width: Number('<%= width %>'),
@@ -71,28 +67,12 @@
         // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
         // parallaxBackgroundSize: '2100px 900px',
 
-        dependencies: [
-          {
-            src: '/reveal.js/plugin/markdown/marked.js',
-          },
-          {
-            src: '/reveal.js/plugin/markdown/markdown.js',
-          },
-          {
-            src: '/reveal.js/plugin/notes/notes.js',
-            async: true,
-          },
-          {
-            src: '/reveal.js/plugin/zoom-js/zoom.js',
-            async: true,
-          },
-          {
-            src: '/reveal.js/plugin/highlight/highlight.js',
-            async: true,
-            callback: function() {
-              hljs.initHighlightingOnLoad();
-            },
-          },
+        plugins: [
+          RevealMarkdown,
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealZoom,
         ],
       });
     </script>

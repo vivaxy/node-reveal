@@ -15,6 +15,8 @@ const { handler, builder } = require('../commands/server.js');
   await handler({
     ...args,
     markdown: 'test/demo.md',
+    theme: 'simple',
+    highlightTheme: 'github',
     watch: true,
     logLevel: 0,
     script: 'custom.js',
