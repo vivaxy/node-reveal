@@ -56,7 +56,7 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 
 ### Commands
 
-#### `start`
+#### `server`
 
 ##### Basic Usage
 
