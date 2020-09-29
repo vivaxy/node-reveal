@@ -36,7 +36,7 @@
     "react-dev-utils": "^10.0.0",
     "reveal.js": "^4.0.2",
     "socket.io": "^2.2.0",
-    "update-notifier": "^4.0.0",
+    "update-notifier": "^5.0.0",
     "yargs": "^16.0.0"
   },
   "devDependencies": {
