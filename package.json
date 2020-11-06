@@ -35,7 +35,7 @@
     "log-util": "^2.0.0",
     "react-dev-utils": "^11.0.0",
     "reveal.js": "^4.0.2",
-    "socket.io": "^2.2.0",
+    "socket.io": "^3.0.0",
     "update-notifier": "^5.0.0",
     "yargs": "^16.0.0"
   },
