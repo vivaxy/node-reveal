@@ -22,7 +22,6 @@ Based on [reveal.js](https://github.com/hakimel/reveal.js#markdown).
 - Speaker view.
 - Theme config.
 - Inline html.
-- Support Node.js >= v8.
 
 ## Notable Markdown Syntax
 
@@ -115,7 +114,7 @@ Add `?showNotes=true`, like: `http://127.0.0.1:3000/?showNotes=true#/`.
 
 ## Support
 
-node >= v8.0
+node >= v12
 
 ## Change Log
 
