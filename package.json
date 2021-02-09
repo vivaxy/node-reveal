@@ -7,7 +7,10 @@
   },
   "scripts": {
     "demo": "node test/demo.js",
-    "release": "standard-version && git push --follow-tags && npm publish --access=public"
+    "release": "standard-version && git push --follow-tags && npm publish --access=public",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "repository": {
     "type": "git",
@@ -45,15 +48,9 @@
     "prettier": "^2.0.0",
     "standard-version": "^9.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "**/**.{js,json,md,html}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }
